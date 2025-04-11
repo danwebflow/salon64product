@@ -1,0 +1,21 @@
+{
+  "name": "Blog",
+  "sections": {
+    "main": {
+      "type": "blog",
+      "settings": {
+        "show_date": true,
+        "show_author": true,
+        "show_excerpt": true,
+        "show_tags": true,
+        "show_comments": true,
+        "show_image": true,
+        "image_ratio": "adapt",
+        "show_read_more": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+} 
