@@ -1,0 +1,12 @@
+<div class="padding-global"><div class="container-large"><div class="padding-section-large"><div class="flex_wrap"><div class="flex_12"><div class="testimonial_wrap"><div class="signpost_wrap"><div class="signpost">
+{{ section.settings.text_signpost_text }}
+</div>
+<div class="signpost_line"></div></div><div class="max-width-xxlarge"><div class="heading-style-h2-sm is-product-quote"> {{ section.settings.richtext_quote_text }} </div>
+</div><div class="author_wrap"><img src="{{ section.settings.image_stylist_image | img_url: 'master' }}" loading="lazy" alt="{{ section.settings.image_stylist_image.alt }}" class="author_img"}>
+<div><p class="text-weight-bold">
+{{ section.settings.text_stylist_name }}
+</p>
+<p class="text-size-small">
+{{ section.settings.text_stylist_position }}
+</p>
+</div></div></div></div></div></div></div></div> {% schema %} {"tag":"section","name":"Product Quote","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"hair type"},{"id":"richtext_quote_text","type":"richtext","label":"Quote Text","default":"<p>\"Who doesn't want to wash their hair in gold! What an incredible shampoo and conditioner all my clients are now addicts and won't use anything else. My client's hair is going from strength to strength and strongly believe this Shampoo and conditioner has raised the bar for the luxury haircare market\" <\/p>"},{"id":"image_stylist_image","type":"image_picker","label":"Stylist Image"},{"id":"text_stylist_name","type":"text","label":"Stylist Name","default":"Stevie Holland"},{"id":"text_stylist_position","type":"text","label":"Stylist Position","default":"Senior Stylist at SALON64"}],"presets":[{"name":"Product Quote","category":"Liquify"}]} {% endschema %}

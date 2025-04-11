@@ -1,0 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_width_image_signpost_TYW4ce": {
+      "type": "header_width_image_signpost",
+      "settings": {
+        "text_signpost_text": "Signpost",
+        "image_header_image": "shopify://shop_images/i6AUzVH4.jpg",
+        "richtext_h1": "<h1><em>Mirror glass </em>RIPPLE EFFECT</h1>"
+      }
+    },
+    "signpost_and_content": {
+      "type": "signpost_and_content",
+      "settings": {
+        "text_signpost_text": "FOR ALL HAIR TYPES",
+        "richtext_heading": "<h2><em>Salon 64's trademark</em> MIRROR GLASS RIPPLE EFFECT</h2>",
+        "richtext_text_content": "<p>The effect on the hair relies on achieving the perfect balance of SHINE, MOISTURE, AND VOLUME powered by the X3 INTELLIGENT INGREDIENT SYSTEM. It has been perfected over years of working with VIP clients in Soho, London and delivers for all hair types.</p>"
+      }
+    },
+    "gallery_ywPKPq": {
+      "type": "gallery",
+      "blocks": {
+        "gallery_slide_video_efDLDW": {
+          "type": "gallery-slide-video",
+          "settings": {
+            "image_slide_video": "https://www.youtube.com/watch?v=oWHRrU6bofg"
+          }
+        },
+        "gallery_slide_H84wqU": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/Salon_64_BTS_DSC08828.jpg"
+          }
+        },
+        "gallery_slide_7eETpm": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/667964a91ca5b1e5dff10be8_IMG_0120_1.webp"
+          }
+        },
+        "gallery_slide_EQrchL": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/6679604f59ac5b072d1b680f_PHOTO-2023-01-10-09-50-41_1.webp"
+          }
+        },
+        "gallery_slide_zikjWU": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/Salon_64_BTS_DSC08172_f5da3de8-d04d-472e-bcc3-09405913400d.jpg"
+          }
+        },
+        "gallery_slide_MpYYny": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/Product_BTS_DSC08589_550c1fa5-6d91-4916-bd7d-1e0db10e70b2.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "gallery_slide_video_efDLDW",
+        "gallery_slide_H84wqU",
+        "gallery_slide_7eETpm",
+        "gallery_slide_EQrchL",
+        "gallery_slide_zikjWU",
+        "gallery_slide_MpYYny"
+      ],
+      "settings": {
+        "text_signpost_text": "gallery"
+      }
+    },
+    "marquee_8abRty": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "page.results",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_width_image_signpost_TYW4ce",
+    "signpost_and_content",
+    "gallery_ywPKPq",
+    "marquee_8abRty"
+  ]
+}

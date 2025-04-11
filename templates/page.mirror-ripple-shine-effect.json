@@ -1,0 +1,82 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_with_image": {
+      "type": "header_with_image",
+      "settings": {
+        "image_header_image": "shopify://shop_images/667962bc4856f38b856a9986_2023_07_17_SHOT_2010_SALON_2064_1.webp",
+        "richtext_h1": "<h1><em>X3 intelligent</em> INGREDIENT SYSTEM</h1>"
+      }
+    },
+    "signpost_and_content": {
+      "type": "signpost_and_content",
+      "settings": {
+        "text_signpost_text": "trademark system",
+        "richtext_text_content": "<h2><em>A perfect balance of<br/></em>SHINE, MOISTURE AND VOLUME</h2><p>Salon 64's trademark MIRROR GLASS RIPPLE EFFECT on the hair relies on achieving the perfect balance of  SHINE, MOISTURE AND VOLUME powered by the X3 INTELLIGENT INGREDIENT SYSTEM. It has been perfected over years of working with VIP clients in Soho, London and delivers for all hair types.</p>"
+      }
+    },
+    "gallery": {
+      "type": "gallery",
+      "blocks": {
+        "gallery_slide_ctgUhH": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/667964aa39989eb4285cb689_IMG_7517_1.webp"
+          }
+        },
+        "gallery_slide_tCVjza": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/667964a796a56485b17b0717_af6bca36-86e8-458b-8855-6c553934bc3e_1.webp"
+          }
+        },
+        "gallery_slide_43bXbV": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/6679604f59ac5b072d1b680f_PHOTO-2023-01-10-09-50-41_1.webp"
+          }
+        },
+        "gallery_slide_rmHmTQ": {
+          "type": "gallery-slide",
+          "settings": {
+            "image_slide_image": "shopify://shop_images/667964a91ca5b1e5dff10be8_IMG_0120_1.webp"
+          }
+        }
+      },
+      "block_order": [
+        "gallery_slide_ctgUhH",
+        "gallery_slide_tCVjza",
+        "gallery_slide_43bXbV",
+        "gallery_slide_rmHmTQ"
+      ],
+      "settings": {
+        "text_signpost_text": "gallery"
+      }
+    },
+    "branded_section": {
+      "type": "branded_section",
+      "settings": {}
+    },
+    "join_sections": {
+      "type": "join_sections",
+      "settings": {}
+    }
+  },
+  "layout": "page.results",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_with_image",
+    "signpost_and_content",
+    "gallery",
+    "branded_section",
+    "join_sections"
+  ]
+}

@@ -1,0 +1,129 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-large">
+      <div class="gallery_component grid">
+        <div class="w-layout-grid flex_wrap space-between mb_2xl">
+          <div id="w-node-_85685647-d977-a962-b5dc-53ef06b7b4e8-06b7b4e2" class="flex_3">
+            <div class="signpost_wrap">
+              <div class="signpost">
+                {{ section.settings.text_signpost_text }}
+              </div>
+              <div class="signpost_line"></div>
+            </div>
+          </div>
+          <div class="flex_3">
+            <div class="gallery_triggers-wrap">
+              <div class="gallery_buttons-wrap">
+                <div swiper-right="" class="gallery_button is-left-arrow">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="100%"
+                    viewbox="0 0 45 25"
+                    fill="none"
+                    class="gallery_svg is-left-arrow"
+                  >
+                    <path d="M44.8562 11.575C38.4637 11.575 33.2812 6.39256 33.2812 0" stroke="currentColor"></path><path d="M33.2812 24.1489C33.2812 17.7564 38.4637 12.5742 44.8562 12.5742" stroke="currentColor"></path><line x1="44.8555" y1="12.5742" x2="0.12281" y2="12.5742" stroke="currentColor"></line>
+                  </svg>
+                </div>
+              </div>
+              <div class="gallery_buttons-wrap">
+                <div swiper-right="" class="gallery_button is-right-arrow">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="100%"
+                    viewbox="0 0 45 25"
+                    fill="none"
+                    class="gallery_svg"
+                  >
+                    <path d="M44.8562 11.575C38.4637 11.575 33.2812 6.39256 33.2812 0" stroke="currentColor"></path><path d="M33.2812 24.1489C33.2812 17.7564 38.4637 12.5742 44.8562 12.5742" stroke="currentColor"></path><line x1="44.8555" y1="12.5742" x2="0.12281" y2="12.5742" stroke="currentColor"></line>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="gallery_swiper">
+          <div class="swiper_wrapper">
+            {% for block in section.blocks %}
+              {% if block.type == 'gallery-slide' %}
+                <div li-block="Gallery Slide" class="swiper_card gallery-card">
+                  <img
+                    class="_5-4"
+                    src="{{ block.settings.image_slide_image | img_url: 'master' }}"
+                    alt="{{ block.settings.image_slide_image.alt }}"
+                    loading="lazy"
+                  >
+                </div>
+              {% endif %}
+
+              <!--
+                {% if block.type == 'gallery-slide-video' %}
+                  <div li-block="Gallery Slide Video" class="swiper_card gallery-card">
+                    <div class="is-video">
+                      <iframe
+                        src="https://www.youtube.com/embed/{{ block.settings.image_slide_video }}?autoplay=0&mute=0"
+                        frameborder="0"
+                        style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:auto"
+                        allow="autoplay"
+                        allowfullscreen
+                      >
+                      </iframe>
+                    </div>
+                  </div>
+                {% endif %}
+              -->
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="section_line"></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "tag": "section",
+  "name": "gallery",
+  "class": "section",
+  "blocks": [
+    {
+      "name": "Gallery Slide",
+      "type": "gallery-slide",
+      "settings": [
+        {
+          "id": "image_slide_image",
+          "type": "image_picker",
+          "label": "Slide Image"
+        }
+      ]
+    },
+    {
+      "name": "Gallery Slide Video",
+      "type": "gallery-slide-video",
+      "settings": [
+        {
+          "id": "image_slide_video",
+          "type": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "label": "Slide Video"
+        }
+      ]
+    }
+  ],
+  "settings": [
+    {
+      "id": "text_signpost_text",
+      "type": "text",
+      "label": "Signpost Text",
+      "default": "gallery"
+    }
+  ],
+  "presets": [
+    {
+      "name": "gallery",
+      "category": "Liquify"
+    }
+  ]
+}
+{% endschema %}

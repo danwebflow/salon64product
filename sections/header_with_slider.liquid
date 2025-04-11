@@ -1,0 +1,32 @@
+<div class="header_img-wrap">
+  <div class="header_swiper">
+    <div class="swiper_wrapper is-header">
+      {% for block in section.blocks %}
+        {% if block.type == 'header-slide' %}
+          <div li-block="Header Slide" class="swiper_card is-header">
+            <img
+              src="{{ block.settings.image_slider_image | img_url: 'master' }}"
+              loading="lazy"
+              alt="{{ block.settings.image_slider_image.alt }}"
+              sizes="100vw"
+              class="hero-header_img"
+              }
+            >
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-bottom">
+      <div class="max-width-xlarge">
+        <div class="hero_header-wrap">
+          <div class="text-rich-text heading-style-h1__primary w-richtext">{{ section.settings.richtext_h1 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"header","name":"Header with slider","class":"section_hero","blocks":[{"name":"Header Slide","type":"header-slide","settings":[{"id":"image_slider_image","type":"image_picker","label":"Slider Image"}]}],"settings":[{"id":"richtext_h1","type":"richtext","label":"H1","default":"<p>\n                    <em>Get the <\/em>SALON EXPERIENCE\n                  <\/p>"}],"presets":[{"name":"Header with slider","category":"Liquify"}]} {% endschema %}

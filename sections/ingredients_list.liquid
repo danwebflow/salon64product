@@ -1,0 +1,60 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-medium">
+      <div class="ingredients_grid_list">
+        {% for block in section.blocks %}
+          <div class="ingredients_card is-horizontal">
+            <h2 class="heading-style-h4">
+              {{ block.settings.text_block_number }}
+            </h2>
+            <h2 class="heading-style-h2">
+              {{ block.settings.text_block_heading }}
+            </h2>
+            <p>
+              {{ block.settings.text_block_text }}
+            </p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ingredients list",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "ingredient",
+      "name": "Ingredient",
+      "settings": [
+        {
+          "id": "text_block_number",
+          "type": "text",
+          "label": "Block Number",
+          "default": "01"
+        },
+        {
+          "id": "text_block_heading",
+          "type": "text",
+          "label": "Block Heading",
+          "default": "SHINE"
+        },
+        {
+          "id": "text_block_text",
+          "type": "text",
+          "label": "Block Text",
+          "default": "Shine and anti static agents wrap around every follicle to repair and condition and create an extra sensory soft touch and feel that gives every head a sexy tousled look."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients list",
+      "category": "Liquify"
+    }
+  ]
+}
+{% endschema %}

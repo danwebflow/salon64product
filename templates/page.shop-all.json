@@ -1,0 +1,39 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_with_image": {
+      "type": "header_with_image",
+      "settings": {
+        "image_header_image": "shopify://shop_images/2023_07_17_SHOT_5_SALON_a910d8e3-0464-407d-9475-f3596fec91c1.jpg",
+        "richtext_h1": "<h1><em>Shop</em> ALL</h1>"
+      }
+    },
+    "featured_products": {
+      "type": "featured_products",
+      "settings": {
+        "text_signpost_text": "All products",
+        "collection_collection": "frontpage",
+        "collection_collection_limit": 10
+      }
+    },
+    "marquee_CKVQVn": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "page.shop-all",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_with_image",
+    "featured_products",
+    "marquee_CKVQVn"
+  ]
+}

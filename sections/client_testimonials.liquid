@@ -1,0 +1,31 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-large">
+      <div class="flex_wrap is-footer-copy">
+        <div class="flex_6">
+          <div class="max-width-medium tablet-full">
+            <div class="signpost_wrap">
+              <div class="signpost">{{ section.settings.text_signpost_text }}</div>
+              <div class="signpost_line"></div>
+            </div>
+            <h2 class="heading-style-h2-lg">
+              <em
+                >What our<br>
+                CLIENTS SAY</em
+              >
+            </h2>
+            <div class="spacer"><div data-lg="" class="spacer_inner"></div></div>
+          </div>
+        </div>
+        <div class="flex_6 align-self-end">
+          <div class="testimonials-wrapper">
+            <div class="text-rich-text testimony w-richtext">{{ section.settings.richtext_quote_text_1 }}</div>
+            <div class="text-rich-text testimony w-richtext">{{ section.settings.richtext_quote_text_2 }}</div>
+            <div class="text-rich-text testimony w-richtext">{{ section.settings.richtext_quote_text_3 }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"section","name":"Client Testimonials","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"hair type"}, {"id":"richtext_quote_text_1","type":"richtext","label":"Quote Text 1","default":"<p>u201cI've<\/p>"},{"id":"richtext_quote_text_2","type":"richtext","label":"Quote Text 2","default":"<p>\n                      \u201cI've never seen anything like it! Walking into the salon and being greeted by a cocktail bar asking my favourite drink. What more could I ask for.\u201d\n                      Luna Putley\n                    <\/p>"},{"id":"richtext_quote_text_3","type":"richtext","label":"Quote Text 3","default":"<p>\n                      \u201cI've never seen anything like it! Walking into the salon and being greeted by a cocktail bar asking my favourite drink. What more could I ask for.\u201d\n                      Luna Putley\n                    <\/p>"}],"presets":[{"name":"Client Testimonials","category":"Liquify"}]} {% endschema %}

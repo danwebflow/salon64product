@@ -1,0 +1,12 @@
+<div class="padding-global"><div class="container-large"><div class="padding-section-large"><div class="flex_wrap space-between"><div class="flex_12"><div class="signpost_wrap"><div class="signpost">
+{{ section.settings.text_signpost_text }}
+</div>
+<div class="signpost_line"></div></div></div></div><div class="products_grid">{% for product in section.settings.collection_collection.products limit: section.settings.collection_collection_limit %}
+<div>
+    
+    {% render 'product_item', product: product %}
+
+    
+</div>
+{% endfor %}
+</div></div></div></div> {% schema %} {"tag":"section","name":"Featured Products","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"All products"},{"id":"collection_collection","type":"collection","label":"Collection"},{"type":"range","id":"collection_collection_limit","min":1,"max":99,"step":1,"label":"Limit: Collection","default":6}],"presets":[{"name":"Featured Products","category":"Liquify"}]} {% endschema %}

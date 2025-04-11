@@ -1,0 +1,93 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="footer_vertical">
+      <div class="w-layout-grid footer_top-wrap">
+        <div id="w-node-_6aa65ad0-698e-47ac-4d97-664014b3de78-14b3de72" class="footer_left-wrap">
+          <a href="#" class="footer3_logo-link w-nav-brand"></a>
+          <div class="footer3_details-wrapper">
+{{ section.settings.newsletter_heading }}
+            <br>
+            <p>{{ section.settings.newsletter_text }}</p>
+            <br>
+            <p>Read our <a href="https://www.salon64products.co.uk/pages/privacy-policy">privacy policy</a>.
+            </p>
+            <div class="button-group u-mt-1">
+              <a href="../pages/sign-up.html" class="button is-outline w-button">subscribe</a>
+            </div>
+          </div>
+        </div>
+        <div class="w-layout-grid footer_menu-wrap">
+          <div id="w-node-_6aa65ad0-698e-47ac-4d97-664014b3de8c-14b3de72" class="footer_link-list">
+            <div class="signpost_wrap is-footer">
+              <div class="signpost">contact</div>
+              <div class="signpost_line is-footer"></div>
+            </div>
+            <a href="mailto:bookings@salon64.co.uk" class="footer_link">bookings@salon64.co.uk</a
+            ><a href="tel:02038484130" class="footer_link">0203 848 4130</a>
+          </div>
+          <div class="footer_link-list">
+            <div class="signpost_wrap is-footer">
+              <div class="signpost">social</div>
+              <div class="signpost_line is-footer"></div>
+            </div>
+            <a href="https://www.instagram.com/salon64london" target="_blank" class="footer_link">Instagram</a
+            ><a href="https://www.facebook.com/p/Salon64-100089773750005/" target="_blank" class="footer_link"
+              >Facebook</a
+            >
+          </div>
+          <div id="w-node-_6aa65ad0-698e-47ac-4d97-664014b3dea0-14b3de72" class="footer_link-list">
+            <div class="signpost_wrap is-footer">
+              <div class="signpost">group64</div>
+              <div class="signpost_line is-footer"></div>
+            </div>
+            <a href="https://www.salon64.co.uk" target="_blank" class="footer_link">Salon64</a
+            ><a href="https://www.club64.co.uk" target="_blank" class="footer_link">Club64</a>
+          </div>
+        </div>
+      </div>
+      <div class="flex_wrap is-footer">
+        <div class="flex_6">
+          <div class="footer_bottom-text u-mt-0">
+            All rights reserved — <span data-year="">2024</span>© Salon64 |
+            <a href="https://www.salon64products.co.uk/pages/privacy-policy" li-setting:url="Privacy Policy"
+              >Privacy Policy<br>
+            </a>
+          </div>
+        </div>
+        <div class="flex_6 is-footer">
+          <div class="footer_bottom-links">
+            <a href="http://www.boldly.co.uk" class="footer_link">Brand, website design and development by Boldly</a
+            ><img src="{{ 'footer-links.svg' | asset_url }}" loading="lazy" alt="" class="footer_link-img">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "tag": "footer",
+  "name": "footer",
+  "class": "footer_component",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "newsletter_heading",
+      "label": "Newsletter Heading",
+      "default": "<h2><em>Sign up to our</em><br>NEWSLETTER</h2>"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_text",
+      "label": "Newsletter Text",
+      "default": "Sign up now to receive exclusive offers and all the latest Salon 64 gossip. We will protect your personal information."
+    }
+  ],
+  "presets": [
+    {
+      "name": "footer",
+      "category": "Liquify"
+    }
+  ]
+}
+{% endschema %}

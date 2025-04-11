@@ -1,0 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "thank_you": {
+      "type": "thank_you",
+      "settings": {
+        "text_heading": "Thank you for signing up to<br>‍our newsletter",
+        "text_paragraph_text": "Thanks for signing up to our newsletter."
+      }
+    },
+    "marquee_cEXbGb": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "page.sign-up-thank-you",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "thank_you",
+    "marquee_cEXbGb"
+  ]
+}

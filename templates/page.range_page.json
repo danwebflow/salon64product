@@ -1,0 +1,32 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "default": {
+      "type": "default",
+      "settings": {}
+    },
+    "branded_section": {
+      "type": "branded_section",
+      "settings": {}
+    },
+    "join_sections": {
+      "type": "join_sections",
+      "settings": {}
+    }
+  },
+  "layout": "page",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "default",
+    "branded_section",
+    "join_sections"
+  ]
+}

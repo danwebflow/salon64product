@@ -1,0 +1,62 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-large">
+      <div class="flex_wrap">
+        <div class="flex_3 is-30">
+          <div class="centered_card">
+            <img
+              src="{{ section.settings.image_shine_image | img_url: 'master' }}"
+              loading="lazy"
+              alt="{{ section.settings.image_shine_image.alt }}"
+              class="card_img u-mb-2"
+              }
+            >
+            <h2 class="heading-style-h2-xsm u-mb-0-5">
+              {{ section.settings.text_shine_heading }}
+            </h2>
+            <p>
+              {{ section.settings.text_shine_paragraph }}
+            </p>
+          </div>
+        </div>
+        <div class="flex_3 is-30">
+          <div class="centered_card">
+            <img
+              src="{{ section.settings.image_moisture_image | img_url: 'master' }}"
+              loading="lazy"
+              alt="{{ section.settings.image_moisture_image.alt }}"
+              sizes="(max-width: 479px) 160px, 208px"
+              class="card_img u-mb-2"
+              }
+            >
+            <h2 class="heading-style-h2-xsm u-mb-0-5">
+              {{ section.settings.text_moisture_heading }}
+            </h2>
+            <p>
+              {{ section.settings.text_moisture_paragraph }}
+            </p>
+          </div>
+        </div>
+        <div class="flex_3 is-30">
+          <div class="centered_card m_0">
+            <img
+              src="{{ section.settings.image_volume_image | img_url: 'master' }}"
+              loading="lazy"
+              alt="{{ section.settings.image_volume_image.alt }}"
+              sizes="(max-width: 479px) 154.734375px, (max-width: 767px) 32vw, (max-width: 991px) 236.5px, 24vw"
+              class="card_img u-mb-2"
+              }
+            >
+            <h2 class="heading-style-h2-xsm u-mb-0-5">
+              {{ section.settings.text_volume_heading }}
+            </h2>
+            <p>
+              {{ section.settings.text_volume_text }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"section","name":"Ingredients benefits","class":"section","settings":[{"id":"image_shine_image","type":"image_picker","label":"Shine Image"},{"id":"text_shine_heading","type":"text","label":"Shine heading","default":"SHINE AND ANTI STATIC"},{"id":"text_shine_paragraph","type":"text","label":"Shine paragraph","default":"Shine and anti static agents wrap around every follicle to repair and condition and create an extra sensory soft touch and feel that gives every head a sexy tousled look."},{"id":"image_moisture_image","type":"image_picker","label":"Moisture Image"},{"id":"text_moisture_heading","type":"text","label":"Moisture Heading","default":"UNIQUE ANTI-OXIDANT COMPLEX"},{"id":"text_moisture_paragraph","type":"text","label":"Moisture  paragraph","default":"Unique anti-oxidant complex: of caffeine, charcoal, dandelion burdock, strengthens and promotes the healthy hair and scalp functions needed for optimum density and growth conditions."},{"id":"image_volume_image","type":"image_picker","label":"Volume Image"},{"id":"text_volume_heading","type":"text","label":"Volume Heading","default":"100% NATURAL CLEANSERS"}, {"id":"text_volume_text","type":"text","label":"Volume Text","default":"100% NATURAL CLEANSERS"}],"presets":[{"name":"Ingredients benefits","category":"Liquify"}]} {% endschema %}

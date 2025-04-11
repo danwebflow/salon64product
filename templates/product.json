@@ -1,0 +1,90 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "product_header": {
+      "type": "product_header",
+      "settings": {
+        "text_signpost_text": "{{ product.metafields.udesly[\"product-signpost\"].value }}",
+        "text_product_name": "{{ product.title }}",
+        "text_bottle_size": "{{ product.metafields.custom.product_bottle_size.value }}",
+        "text_arrow_items": "{{ product.metafields.custom.accordion_arrows.value }}",
+        "text_how_to_use": "{{ product.metafields.custom.accordion_how_to_use.value }}",
+        "text_ingredients_list": "{{ product.metafields.custom.accordion_ingredients.value }}"
+      }
+    },
+    "product_hair_types": {
+      "type": "product_hair_types",
+      "settings": {
+        "text_signpost": "Hair Type",
+        "image_hair_type_1": "{{ product.metafields.custom.hair_type_1.value }}",
+        "text_hair_type_1_text": "{{ product.metafields.udesly[\"hairstyle-1-text\"].value }}",
+        "image_hair_type_2": "{{ product.metafields.custom.hair_type_2.value }}",
+        "text_hair_type_2_text": "{{ product.metafields.udesly[\"hairstyle-2-text\"].value }}",
+        "image_hair_type_3": "{{ product.metafields.custom.hair_type_3.value }}",
+        "text_hair_type_3_text": "{{ product.metafields.udesly[\"hairstyle-3-text\"].value }}",
+        "image_hair_type_4": "{{ product.metafields.custom.hair_type_4.value }}",
+        "text_hair_type_4_text": "{{ product.metafields.udesly[\"hairstyle-4-text\"].value }}"
+      }
+    },
+    "product_ingredients": {
+      "type": "product_ingredients",
+      "settings": {
+        "image_image_featured": "{{ product.metafields.custom.ingredients_image.value }}",
+        "text_signpost_text": "{{ product.metafields.custom.ingredients_signpost.value }}",
+        "richtext_h2_heading": "{{ product.metafields.custom.ingredients_heading | metafield_tag }}",
+        "text_paragraph": "{{ product.metafields.custom.ingredients_paragraph.value }}",
+        "text_ingredients_list": ""
+      }
+    },
+    "product_quote": {
+      "type": "product_quote",
+      "settings": {
+        "text_signpost_text": "From our team",
+        "richtext_quote_text": "{{ product.metafields.custom.stylist_quote | metafield_tag }}",
+        "image_stylist_image": "{{ product.metafields.custom.stylist_image.value }}",
+        "text_stylist_name": "{{ product.metafields.udesly[\"expert-name\"].value }}",
+        "text_stylist_position": "{{ product.metafields.udesly[\"expert-title\"].value }}"
+      }
+    },
+    "client_testimonials": {
+      "type": "client_testimonials",
+      "settings": {
+        "text_signpost_text": "Testimonials",
+        "richtext_quote_text_1": "{{ product.metafields.custom.quote_text_1 | metafield_tag }}",
+        "richtext_quote_text_2": "{{ product.metafields.custom.quote_text_2 | metafield_tag }}",
+        "richtext_quote_text_3": "{{ product.metafields.custom.quote_text_3 | metafield_tag }}"
+      }
+    },
+    "product_range": {
+      "type": "product_range",
+      "settings": {
+        "text_product_range_text": "{{ product.title }}",
+        "collection_collection": "{{ product.metafields.custom.range.value }}",
+        "collection_collection_limit": 6
+      }
+    },
+    "marquee_ET7AJD": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "product",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "product_header",
+    "product_hair_types",
+    "product_ingredients",
+    "product_quote",
+    "client_testimonials",
+    "product_range",
+    "marquee_ET7AJD"
+  ]
+}

@@ -1,0 +1,13 @@
+<div class="padding-global"><div class="container-large"><div class="padding-section-large"><div class="x1_grid"><div id="w-node-b61ba572-49c9-b96e-f122-01c716766658-16766651"><div class="signpost_wrap"><div class="signpost">
+{{ section.settings.text_product_range_text }}
+</div>
+<div class="signpost_line"></div></div><h2 class="heading-style-h2-lg"><em>Get the full<br>
+‍</em>RANGE...</h2></div><div id="w-node-b61ba572-49c9-b96e-f122-01c71676665f-16766651" class="w-layout-grid other-products">{% for product in section.settings.collection_collection.products limit: section.settings.collection_collection_limit %}
+<div>
+    
+    {% render 'product_item', product: product %}
+
+    
+</div>
+{% endfor %}
+</div></div></div></div></div> {% schema %} {"tag":"section","name":"Product Range","class":"section","settings":[{"id":"text_product_range_text","type":"text","label":"Product Range Text","default":"Range text"},{"id":"collection_collection","type":"collection","label":"Collection"},{"type":"range","id":"collection_collection_limit","min":1,"max":99,"step":1,"label":"Limit: Collection","default":6}],"presets":[{"name":"Product Range","category":"Liquify"}]} {% endschema %}

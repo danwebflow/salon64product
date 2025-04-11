@@ -1,0 +1,26 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-large">
+      <div class="x1_grid">
+        <div id="w-node-_10aa3e8b-1057-b9b9-d1e5-983074b71d14-74b71d0e">
+          <h2 class="heading-style-h2-lg">
+            <em
+              >Get the full<br>
+              ‍</em
+            >RANGE...
+          </h2>
+        </div>
+        <div id="w-node-_10aa3e8b-1057-b9b9-d1e5-983074b71d19-74b71d0e" class="w-layout-grid other-products">
+          {% for product in section.settings.collection_collection.products
+            limit: section.settings.collection_collection_limit
+          %}
+            <div>
+              {% render 'product_item', product: product %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"section","name":"Range","class":"section","settings":[{"id":"collection_collection","type":"collection","label":"Collection"},{"type":"range","id":"collection_collection_limit","min":1,"max":99,"step":1,"label":"Limit: Collection","default":6}],"presets":[{"name":"Range","category":"Liquify"}]} {% endschema %}

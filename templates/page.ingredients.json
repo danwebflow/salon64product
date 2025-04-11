@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_with_image": {
+      "type": "header_with_image",
+      "settings": {
+        "image_header_image": "shopify://shop_images/i6AUzVH4.jpg",
+        "richtext_h1": "<h1><em>X3 intelligent </em>INGREDIENT SYSTEM</h1>"
+      }
+    },
+    "signpost_and_content": {
+      "type": "signpost_and_content",
+      "settings": {
+        "text_signpost_text": "GOES BEYOND THE BOND",
+        "richtext_heading": "<h2>Ever wondered how Salon64 can create its trade made results?</h2>",
+        "richtext_text_content": "<p>Well, at the core of Salon 64 products is it's unique X3 Intelligent Ingredient System that goes beyond the bond and ensures that the same mirror glass results can be delivered whether hair is straight or curly, frizzy or dull.</p>"
+      }
+    },
+    "ingredients_benefits": {
+      "type": "ingredients_benefits",
+      "settings": {
+        "image_shine_image": "shopify://shop_images/Salon_64_BTS_DSC08828_33a6d60f-7842-4711-839d-a6f3e05559ba.jpg",
+        "text_shine_heading": "X3 SHINE AND ANTI STATIC AGENTS",
+        "text_shine_paragraph": "Wrap around every follicle to repair and condition and create an extra sensory soft touch and feel that gives every head a sexy tousled look",
+        "image_moisture_image": "shopify://shop_images/Salon_64_BTS_DSC08389.jpg",
+        "text_moisture_heading": "X3 UNIQUE ANTI-OXIDANT COMPLEX",
+        "text_moisture_paragraph": "Composed of caffeine, charcoal, and dandelion burdock, this complex strengthens and promotes the healthy hair and scalp functions needed for optimum density and growth conditions.",
+        "image_volume_image": "shopify://shop_images/PHOTO-2023-01-10-09-50-40_2.jpg",
+        "text_volume_heading": "X3 100% NATURAL GENTLE CLEANSERS",
+        "text_volume_text": "Lift just the right amount daily wear and tear protecting the essential moisture levels and colour in the hair leaving it rippling with volume."
+      }
+    },
+    "ingredients_list": {
+      "type": "ingredients_list",
+      "blocks": {
+        "ingredient_TAjR4p": {
+          "type": "ingredient",
+          "settings": {
+            "text_block_number": "01",
+            "text_block_heading": "SHINE",
+            "text_block_text": "The X3 smoothing agents of  Polyquaternium-10, Behentrimonium Chloride and Cetrimonium Chloride work along side Zingiber Officinale (Ginger) Root extract to deliver the Essential Fatty acids and Vitamins to nourish and condition your hair and give it super shine credentials."
+          }
+        },
+        "ingredient_fGfJ3V": {
+          "type": "ingredient",
+          "settings": {
+            "text_block_number": "02",
+            "text_block_heading": "MOISTURE",
+            "text_block_text": "The unique sulphate free formulations use natural clenasers (surfactants) instead, including 100% natural Betaine derived from sugar beet.  Not only does this protect your colour and curls but also maintains your natural moisture levels too preventing damage and promoting repair."
+          }
+        },
+        "ingredient_LNzEGU": {
+          "type": "ingredient",
+          "settings": {
+            "text_block_number": "03",
+            "text_block_heading": "VOLUME",
+            "text_block_text": "An extra shot of volume is delivered to your hair through Hydroxyethylcellulose dervived from plant cellulose and Vaccinium Angustifolium (blueberry) Fruit Extract.  As well as giving enviable thickness and bounce they are also proven to repair and restore damaged hair, prevent breakage and increase hair growth."
+          }
+        }
+      },
+      "block_order": [
+        "ingredient_TAjR4p",
+        "ingredient_fGfJ3V",
+        "ingredient_LNzEGU"
+      ],
+      "settings": {}
+    },
+    "marquee_hNrfjF": {
+      "type": "marquee",
+      "settings": {}
+    },
+    "marquee_XjVVa9": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "page.ingredients",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_with_image",
+    "signpost_and_content",
+    "marquee_XjVVa9",
+    "ingredients_benefits",
+    "ingredients_list",
+    "marquee_hNrfjF"
+  ]
+}

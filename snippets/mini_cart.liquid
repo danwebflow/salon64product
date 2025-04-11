@@ -1,0 +1,404 @@
+<script>
+    document.addEventListener('alpine:init', () => {
+
+    Alpine.data('handleMinicart', () => ({
+        init() {
+            console.log('handleMinicart init')
+        },
+        open: false,
+        note: null,
+        attributes: {},
+        original_total_price: 0,
+        total_price: 0,
+        total_discount: 0,
+        total_weight: 0.0,
+        item_count: 0,
+        products: [],
+        requires_shipping: false,
+        currency: 'EUR',
+        items_subtotal_price: 0,
+        cart_level_discount_applications: [],
+        cartApiResponseDefault : {
+            result : {},
+            show : false,
+            timeout : 5000,
+        },
+        cartApiResponse : {
+            result : {},
+            show : false,
+            timeout : 5000,
+        },
+
+        // deprecated:
+        total: {
+            items: 0,
+            price: 0,
+            weight: 0,
+            discount: 0,
+        },
+        _abortController : null,
+        initAbortController() {
+            if(this._abortController) {
+                this._abortController.abort('abort previous request');
+            }
+            this._abortController = new AbortController()
+        },
+        getAbortControllerSignal() {
+            return this._abortController.signal
+        },
+        resetAbortController() {
+            this._abortController = null;
+        },
+        toggleMiniCart() {
+            console.log('(minicart.js) toggleMiniCart called');
+
+            LiquifyHelper.handleTriggerClick();
+
+            this.getCart();
+        },
+
+        /**
+         * Get the cart data.
+         */
+        getCart() {
+            this.initAbortController()
+            fetch(window.Shopify.routes.root + 'cart.js', {
+                method: 'GET',
+                signal: this.getAbortControllerSignal(),
+                headers: {'Content-Type': 'application/json'},
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.resetAbortController();
+
+                this.total.items = data.item_count;
+
+                this.products = data.items.map((item) => {
+                    item.title = this.htmlspecialchars_decode(item.title)
+                    return item
+                })
+
+                this.total.price = data.total_price;
+                this.total.weight = data.total_weight;
+                this.total.discount = data.total_discount;
+
+                this.$dispatch('carttotalitems', data.item_count);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        },
+
+        /**
+         * @param id
+         * @param quantity
+         */
+        increaseCartItemQuantity(id, quantity) {
+            this.updateCartItemQuantity(id, parseInt(quantity) + 1);
+        },
+
+        /**
+         * @param id
+         * @param quantity
+         */
+        decreaseCartItemQuantity(id, quantity) {
+            this.updateCartItemQuantity(id, parseInt(quantity) - 1);
+        },
+
+        /**
+         * Update the cart item.
+         *
+         * @param id
+         * @param quantity
+         */
+        updateCartItemQuantity(id, quantity) {
+            this.initAbortController();
+            console.log('updateCartItemQuantity(): id, quantity: ', id, quantity);
+            this.products.filter((product)  => {
+                if(parseInt(product.id) === parseInt(id)) {
+                    product.quantity = quantity
+                }
+            })
+            fetch(window.Shopify.routes.root + 'cart/change.js', {
+                method: 'POST',
+                signal: this.getAbortControllerSignal(),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: `${id}`,
+                    quantity: quantity,
+                }),
+            })
+                .then(response => response.json())
+                .then(data => {
+                    this.resetAbortController();
+                    // console.log('updateCartItemQuantity(): ', data);
+                    this.$dispatch('cartupdated');                
+                    this.$dispatch('showcartmessage', { status: data.status, message: data.message, description: data.description });
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    this.$dispatch('showcartmessage', { status: error?.status, message: error, description: error });
+                });
+        },
+
+        /**
+         * Format monetary values.
+         */
+        moneyFormat(value, minor = true) {
+            return LiquifyHelper.moneyFormat(value, minor)
+        },
+
+        htmlspecialchars_decode(string) {
+            return LiquifyHelper.htmlspecialchars_decode(string)
+        },
+
+        /**
+         * Shows the minicart api message
+         * @param event
+         */
+        showCartMessage(event) {
+            console.log("dispatched showCartMessage", event)
+            if(event?.detail?.status) {
+                this.cartApiResponse.result = event.detail ?? this.cartApiResponseDefault.result;
+                this.cartApiResponse.show = true
+                setTimeout(() =>  this.cartApiResponse =  this.cartApiResponseDefault, this.cartApiResponse.timeout ?? 5000)
+            }
+        },
+    }))
+});
+</script>
+
+<div
+  data-delay="0"
+  data-hover="false"
+  li-element="mini-cart"
+  class="nav_dropdown is-minicart w-dropdown"
+  x-data="handleMinicart()"
+  x-init="getCart()"
+  @cartupdated.window="getCart()"
+  @setcartitem.window="updateCartItemQuantity($event.detail.product, $event.detail.quantity)"
+  @increasecartitem.window="increaseCartItemQuantity($event.detail.product, $event.detail.quantity)"
+  @decreasecartitem.window="decreaseCartItemQuantity($event.detail.product, $event.detail.quantity)"
+  @toggleminicart.window="toggleMiniCart()"
+  @showcartmessage.window="showCartMessage"
+>
+  <div
+    li-element="mini-cart-toggle"
+    class="nav_dropdown-trigger w-dropdown-toggle"
+    @click="$dispatch('cartupdated.window')"
+  >
+    <div class="nav-link-text">
+      cart(<span
+        li-element="mini-cart-item-count"
+        x-data="{ items: 0 }"
+        x-text="items"
+        @carttotalitems.window="items = event.detail"
+        >0</span
+      >)
+    </div>
+  </div>
+  <nav
+    li-element="mini-cart-container"
+    class="nav-dropdown_minicart w-dropdown-list"
+    :class="open || 'mini-cart-closed'"
+  >
+    <div
+      li-element="dropdown-toggle"
+      class="navbar_mini-cart-close"
+      data-dropdowntoggle=""
+      @click="LiquifyHelper.triggerClick($event.target.closest('.w-dropdown').querySelector('.w-dropdown-toggle.w--open'))"
+    ></div>
+    <div class="mini-cart_component">
+      <div li-element="mini-cart-full" class="mini-cart_full" :style="total.items < 1 && { display: 'none' }">
+        <div class="mini-cart_header">
+          <div class="heading-style-h3">Bag</div>
+          <img
+            li-element="dropdown-toggle"
+            aria-label="Close Cart"
+            alt=""
+            src="{{ 'cart-close1.svg' | asset_url }}"
+            loading="lazy"
+            class="mini-menu_close"
+            data-dropdowntoggle=""
+            @click="LiquifyHelper.triggerClick($event.target.closest('.w-dropdown').querySelector('.w-dropdown-toggle.w--open'))"
+          >
+        </div>
+        <div class="mini-cart_line-item">
+          <ul role="list" class="mini-cart_line-item_list w-list-unstyled">
+            <template x-for="product in products" :key="product.key">
+              <li li-element="mini-cart-item" class="mini-cart_line-item_item" x-init="getCart()">
+                <img
+                  class="mini-cart_line-item_img"
+                  src="../images/pack-shot-Gold-Box-Shampoo1_1.webp"
+                  alt=""
+                  sizes="100vw"
+                  id="w-node-_4f85b529-89a8-5e3f-675f-4306b7da495b-d398f1ad"
+                  loading="lazy"
+                  x-bind:src="product.image"
+                >
+                <div class="mini-cart_line-item_product-info">
+                  <div li-js-object="product.title" class="heading-style-h5" x-text="product.title">
+                    <em>Liquid</em>GOLD
+                  </div>
+                  <div class="product-header3_price-wrapper">
+                    <div
+                      li-js-price="product.price"
+                      class="heading-style-h4 text-size-small"
+                      x-text="LiquifyHelper.moneyFormat(product.price, true, '{{ shop.money_with_currency_format }}')"
+                    >
+                      £44.99
+                    </div>
+                    <div class="product-header_text-divider is-mini-cart"></div>
+                    <div
+                      li-object:text="product.metafields.custom.product_bottle_size"
+                      class="heading-style-h4 text-size-small"
+                    >
+                      250ml
+                    </div>
+                  </div>
+                  <div class="mini-cart_line-item_quantity">
+                    <div
+                      li-element="mini-cart-item-decrease"
+                      href="#"
+                      class="mini-cart_line-item_quantity-adjust w-inline-block"
+                      :productprop="product"
+                      @click="$dispatch('decreasecartitem', { product: product.id, quantity: product.quantity, action: 'decrease' })"
+                      </div>
+                      <div class="quantity_icon w-embed">
+                        <svg
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          aria-hidden="true"
+                          role="img"
+                          class="iconify iconify--iconoir"
+                          width="100%"
+                          height="100%"
+                          preserveaspectratio="xMidYMid meet"
+                          viewbox="0 0 24 24"
+                        >
+                          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12h12"></path>
+                        </svg>
+                      </div>
+                    </div>
+                    <input
+                      li-element="mini-cart-item-quantity"
+                      class="mini-cart_line-item_quantity-adjust"
+                      value="1"
+                      :productprop="product"
+                      @blur="$dispatch('setcartitem', { product: product.id, quantity: product.quantity })"
+                      x-model="product.quantity"
+                    >
+                    <div
+                      li-element="mini-cart-item-increase"
+                      href="#"
+                      class="mini-cart_line-item_quantity-adjust w-inline-block"
+                      :productprop="product"
+                      @click="$dispatch('increasecartitem', { product: product.id, quantity: product.quantity, action: 'increase' })"
+                      </div
+                    >
+                      <div class="quantity_icon w-embed">
+                        <svg
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          aria-hidden="true"
+                          role="img"
+                          class="iconify iconify--iconoir"
+                          width="100%"
+                          height="100%"
+                          preserveaspectratio="xMidYMid meet"
+                          viewbox="0 0 24 24"
+                        >
+                          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12h6m6 0h-6m0 0V6m0 6v6"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    li-element="mini-cart-item-remove"
+                    href="#"
+                    class="mini-cart_remove"
+                    :productprop="product"
+                    @click="$dispatch('setcartitem', { product: product.id, quantity: 0 })"
+                    >Remove</div>
+                </div>
+                <div id="w-node-_4f85b529-89a8-5e3f-675f-4306b7da496f-d398f1ad" class="div-block-6"></div>
+              </li>
+            </template>
+          </ul>
+        </div>
+        <div class="mini-cart_footer">
+          <div class="mini-cart_footer_total">
+            <div class="text-size-regular text-weight-bold">Estimated total</div>
+            <div>
+              <div
+                li-js-price="total.price"
+                class="text-size-regular text-weight-bold"
+                x-text="LiquifyHelper.moneyFormat(total.price, true, '{{ shop.money_with_currency_format }}')"
+              >
+                £19.00
+              </div>
+            </div>
+          </div>
+          <p class="text-size-small">Any discounts, shipping & taxes will be calculated when you checkout.</p>
+          <div class="spacer"><div data-xs="" class="spacer_inner"></div></div>
+          <div x-cloak="hide" li-element="mini-cart-api-response" class="mini-cart_footer-message">
+            <div class="mini-cart_footer-message-item">
+              <div class="text-size-regular text-weight-bold">Status</div>
+              <div
+                li-js-object="cartApiResponse?.result?.status"
+                class="text-size-regular text-weight-bold"
+                x-text="cartApiResponse?.result?.status"
+              >
+                14,99 $
+              </div>
+            </div>
+            <div class="mini-cart_footer-message-item">
+              <div class="text-size-regular text-weight-bold">No result</div>
+              <div
+                li-js-object="cartApiResponse?.result?.message"
+                class="text-size-regular text-weight-bold"
+                x-text="cartApiResponse?.result?.message"
+              >
+                14,99 $
+              </div>
+            </div>
+            <div class="mini-cart_footer-message-item">
+              <div class="text-size-regular text-weight-bold">Status</div>
+              <div
+                li-js-object="cartApiResponse?.result?.description"
+                class="text-size-regular text-weight-bold"
+                x-text="cartApiResponse?.result?.description"
+              >
+                14,99 $
+              </div>
+            </div>
+          </div>
+          <a x-bind:href="'/checkout'" href="#" class="button w-button">Checkout</a
+          ><a li-object:href="routes.cart_url" href="{{ routes.cart_url }}" class="button is-secondary hide w-button"
+            >Cart</a
+          >
+        </div>
+      </div>
+      <div
+        li-cloak="hide"
+        li-element="mini-cart-empty"
+        class="mini-cart-empty"
+        :style="total.items && { display: 'none' }"
+      >
+        <div class="mini-cart_header">
+          <div class="heading-style-h3">Bag</div>
+          <img
+            height="40px"
+            width="40px"
+            src="{{ 'cart-close1.svg' | asset_url }}"
+            loading="eager"
+            li-element="dropdown-toggle"
+            alt="Schließen Button"
+            class="mini-menu_close"
+            data-dropdowntoggle=""
+            @click="LiquifyHelper.triggerClick($event.target.closest('.w-dropdown').querySelector('.w-dropdown-toggle.w--open'))"
+          >
+        </div>
+        <div class="mini-cart_empty"><div class="text-size-regular">No Products selected</div></div>
+      </div>
+    </div>
+  </nav>
+</div>

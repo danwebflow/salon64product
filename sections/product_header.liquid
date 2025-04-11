@@ -1,0 +1,306 @@
+<div class="padding-global">
+  <div class="container-large is-product">
+    <div class="padding-section-large">
+      <div class="product-header3_component">
+        <script src="{{ 'liquify_custom.js' | asset_url }}" type="text/javascript"></script>
+        <div
+          li-element="product-variant-container"
+          class="w-layout-grid product-header_grid"
+          x-data="handleVariant({{ product | json | escape }}, {{ product.options_by_name | json | escape }}, {{ product.selected_or_first_available_variant | json | escape }})"
+          x-init="$nextTick(() => { activateVariants() })"
+          data-productid="{{ product.id }}"
+          @setbundleitem.window="updateBundleItem($event.detail.product, $event.detail.quantity)"
+        >
+          <div id="w-node-cd3d9a4c-d4a8-6cd6-9f8e-83b6a3cffec8-40b5c40f" class="swiper-container is-product-gallery">
+            <div class="swiper is-product-gallery">
+              <div class="swiper-wrapper is-product-gallery">
+                {% for image in product.images %}
+                  <div li-for="image in product.images" class="swiper-slide is-product-gallery">
+                    <img
+                      src="{{ image.src | product_img_url: 'master' }}"
+                      loading="lazy"
+                      li-object:src="image.src | product_img_url: 'master'"
+                      li-object:alt="image.alt"
+                      alt="{{ image.alt }}"
+                      class="product_gallery-image"
+                    >
+                  </div>
+                {% endfor -%}
+                {%- for image in product.images %}
+                  <div li-for="image in product.images" class="swiper-slide is-product-gallery">
+                    <div class="product_gallery-lightbox">
+                      <img
+                        li-object:src="image.src | product_img_url: 'master'"
+                        li-object:alt="image.alt"
+                        alt="{{ image.alt }}"
+                        src="{{ image.src | product_img_url: 'master' }}"
+                        loading="lazy"
+                        class="product_gallery-image"
+                      >
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="product-header_slider-wrapper">
+              <div class="swiper is-product-thumbnail">
+                <div class="swiper-wrapper is-product-thumbnail">
+                  {% for image in product.images %}
+                    <div li-for="image in product.images" class="swiper-slide is-product-thumbnail">
+                      <img
+                        src="{{ image.src | product_img_url: 'master' }}"
+                        loading="lazy"
+                        li-object:src="image.src | product_img_url: 'master'"
+                        li-object:alt="image.alt"
+                        alt="{{ image.alt }}"
+                        class="product_thumbnail-image"
+                      >
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="product_header-wrap">
+            <div class="product_header-top">
+              <div class="signpost_wrap">
+                <div class="signpost">
+                  {{ section.settings.text_signpost_text }}
+                </div>
+                <div class="signpost_line"></div>
+              </div>
+              <div class="text-rich-text header_text w-richtext">
+                <h1>
+                  {{ section.settings.text_product_name }}
+                </h1>
+              </div>
+            </div>
+
+            
+                      <div class="swiper-container is-product-gallery only-tablet">
+            <div class="swiper is-product-gallery">
+              <div class="swiper-wrapper is-product-gallery">
+                {% for image in product.images %}
+                  <div li-for="image in product.images" class="swiper-slide is-product-gallery">
+                    <img
+                      src="{{ image.src | product_img_url: 'master' }}"
+                      loading="lazy"
+                      li-object:src="image.src | product_img_url: 'master'"
+                      li-object:alt="image.alt"
+                      alt="{{ image.alt }}"
+                      class="product_gallery-image"
+                    >
+                  </div>
+                {% endfor -%}
+                {%- for image in product.images %}
+                  <div li-for="image in product.images" class="swiper-slide is-product-gallery">
+                    <div class="product_gallery-lightbox">
+                      <img
+                        li-object:src="image.src | product_img_url: 'master'"
+                        li-object:alt="image.alt"
+                        alt="{{ image.alt }}"
+                        src="{{ image.src | product_img_url: 'master' }}"
+                        loading="lazy"
+                        class="product_gallery-image"
+                      >
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="product-header_slider-wrapper">
+              <div class="swiper is-product-thumbnail">
+                <div class="swiper-wrapper is-product-thumbnail">
+                  {% for image in product.images %}
+                    <div li-for="image in product.images" class="swiper-slide is-product-thumbnail">
+                      <img
+                        src="{{ image.src | product_img_url: 'master' }}"
+                        loading="lazy"
+                        li-object:src="image.src | product_img_url: 'master'"
+                        li-object:alt="image.alt"
+                        alt="{{ image.alt }}"
+                        class="product_thumbnail-image"
+                      >
+                    </div>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+            
+            <div class="product_header-bottom">
+              <div class="product-header3_price-wrapper is-padding">
+                <div li-object="product.price | money" li-js-price="price" class="heading-style-h4 is-product">
+                  {{ product.price | money }}
+                </div>
+                <div class="product-header_text-divider"></div>
+                <div class="heading-style-h4 is-product">
+                  {{ section.settings.text_bottle_size }}
+                </div>
+              </div>
+              <p li-object:text="product.content">
+                {{ product.content }}
+              </p>
+              <div class="product-header3_add-to-cart w-form">
+                <form
+                  id="wf-form-Quantity"
+                  name="wf-form-Quantity"
+                  data-name="Quantity"
+                  method="get"
+                  class="product-header3_default-state"
+                  data-wf-page-id="66783bde2481253f40b5c40f"
+                  data-wf-element-id="2e62ef26-2026-ae90-7abe-c146761954f4"
+                >
+                  <div class="product_quantity-wrap margin-bottom">
+                    <a x-on:click="quantity--" href="#" class="mini-cart_line-item_quantity-adjust w-inline-block">
+                      <div class="quantity_icon w-embed">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          aria-hidden="true"
+                          role="img"
+                          class="iconify iconify--iconoir"
+                          width="100%"
+                          height="100%"
+                          preserveaspectratio="xMidYMid meet"
+                          viewbox="0 0 24 24"
+                        >
+                          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12h12"></path>
+                        </svg>
+                      </div></a
+                    ><input
+                      li-element="add-to-cart-quantity"
+                      class="mini-cart_line-item_quantity-adjust"
+                      value="1"
+                      x-model="quantity"
+                    >
+                    <a x-on:click="quantity++" href="#" class="mini-cart_line-item_quantity-adjust w-inline-block">
+                      <div class="quantity_icon w-embed">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          xmlns:xlink="http://www.w3.org/1999/xlink"
+                          aria-hidden="true"
+                          role="img"
+                          class="iconify iconify--iconoir"
+                          width="100%"
+                          height="100%"
+                          preserveaspectratio="xMidYMid meet"
+                          viewbox="0 0 24 24"
+                        >
+                          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12h6m6 0h-6m0 0V6m0 6v6"></path>
+                        </svg>
+                      </div>
+                    </a>
+                  </div>
+                  <a
+                    li-element="add-to-cart"
+                    href="#"
+                    class="button is-add-to-cart-button w-button"
+                    @click="addToCart(true)"
+                    :disabled="!addToCartButton"
+                    >Add to cart</a
+                  >
+                </form>
+                <div class="out-of-stock-state w-form-done">
+                  <div>Thank you! Your submission has been received!</div>
+                </div>
+                <div class="error-state w-form-fail">
+                  <div>Oops! Something went wrong while submitting the form.</div>
+                </div>
+              </div>
+              <div class="div-line"></div>
+              <ul role="list" class="product_arrow-list">
+                {{ section.settings.text_arrow_items }}
+              </ul>
+              <div class="product_accordion-wrapper">
+                <div class="product_accordion">
+                  <div data-w-id="2e62ef26-2026-ae90-7abe-c14676195519" class="product_accordion-heading">
+                    <div class="text-size-medium text-style-allcaps">HOW TO USE</div>
+                    <div class="product-header3_accordion-icon">
+                      <div class="icon-embed-xsmall w-embed">
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewbox="0 0 24 25"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M19.0002 12.25V12.75C19.0002 13.0261 18.7764 13.25 18.5003 13.25H12.7502V19C12.7502 19.2761 12.5264 19.5 12.2502 19.5H11.7503C11.4741 19.5 11.2502 19.2761 11.2502 19V13.25H5.50025C5.2241 13.25 5.00024 13.0261 5.00024 12.75V12.25C5.00024 11.9739 5.2241 11.75 5.50025 11.75H11.2502V6C11.2502 5.72385 11.4741 5.5 11.7503 5.5H12.2502C12.5264 5.5 12.7502 5.72385 12.7502 6V11.75H18.5003C18.7764 11.75 19.0002 11.9739 19.0002 12.25Z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div style="height:0px" class="product-header3_details">
+                    <ul role="list" class="product_number-list">
+                      {{ section.settings.text_how_to_use }}
+                    </ul>
+                  </div>
+                </div>
+                <div class="product_accordion">
+                  <div data-w-id="2e62ef26-2026-ae90-7abe-c14676195523" class="product_accordion-heading">
+                    <div class="text-size-medium text-style-allcaps">INGREDIENTS</div>
+                    <div class="product-header3_accordion-icon">
+                      <div class="icon-embed-xsmall w-embed">
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewbox="0 0 24 25"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M19.0002 12.25V12.75C19.0002 13.0261 18.7764 13.25 18.5003 13.25H12.7502V19C12.7502 19.2761 12.5264 19.5 12.2502 19.5H11.7503C11.4741 19.5 11.2502 19.2761 11.2502 19V13.25H5.50025C5.2241 13.25 5.00024 13.0261 5.00024 12.75V12.25C5.00024 11.9739 5.2241 11.75 5.50025 11.75H11.2502V6C11.2502 5.72385 11.4741 5.5 11.7503 5.5H12.2502C12.5264 5.5 12.7502 5.72385 12.7502 6V11.75H18.5003C18.7764 11.75 19.0002 11.9739 19.0002 12.25Z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-header3_details">
+                    <p>
+                      {{ section.settings.text_ingredients_list }}
+                    </p>
+                                  <div class="u-mb-1-5">
+                  </div>
+                </div>
+                <div class="product_accordion">
+                  <div data-w-id="2e62ef26-2026-ae90-7abe-c1467619552d" class="product_accordion-heading">
+                    <div class="text-size-medium text-style-allcaps">BUY IN STORE</div>
+                    <div class="product-header3_accordion-icon">
+                      <div class="icon-embed-xsmall w-embed">
+                        <svg
+                          width="100%"
+                          height="100%"
+                          viewbox="0 0 24 25"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path d="M19.0002 12.25V12.75C19.0002 13.0261 18.7764 13.25 18.5003 13.25H12.7502V19C12.7502 19.2761 12.5264 19.5 12.2502 19.5H11.7503C11.4741 19.5 11.2502 19.2761 11.2502 19V13.25H5.50025C5.2241 13.25 5.00024 13.0261 5.00024 12.75V12.25C5.00024 11.9739 5.2241 11.75 5.50025 11.75H11.2502V6C11.2502 5.72385 11.4741 5.5 11.7503 5.5H12.2502C12.5264 5.5 12.7502 5.72385 12.7502 6V11.75H18.5003C18.7764 11.75 19.0002 11.9739 19.0002 12.25Z" fill="currentColor"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-header3_details">
+                    <a
+                      href="https://www.google.com/maps/place/Salon64/@51.513947,-0.132283,15z/data=!4m5!3m4!1s0x0:0xe0ce97e6a09130e3!8m2!3d51.513947!4d-0.132283?shorturl=1"
+                      target="_blank"
+                      class="w-inline-block"
+                    >
+                      <p class="u-mb-1-5">
+                        Visit our store at at Salon64<br>
+                        <br>
+                        ‍<strong
+                          >Salon64<br>
+                          ‍</strong
+                        >14 Bateman Street,<br>
+                        London, W1D3AG
+                      </p>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"header","name":"Product Header","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"creating the gold standard"},{"id":"text_product_name","type":"text","label":"Product Name","default":"<em>Liquid<\/em> <em>Gold<\/em> SHAMPOO"},{"id":"text_bottle_size","type":"text","label":"Bottle Size","default":"250ml"},{"id":"text_arrow_items","type":"text","label":"Arrow Items","default":"\n                      <li class=\"product_arrow-line\">Vegan &amp; Cruelty Free<\/li>\n                      <li class=\"product_arrow-line\">Using Natural Betaine extracted from Sugar Beet<\/li>\n                      <li class=\"product_arrow-line\">Active ingredient Ginger<\/li>\n                      <li class=\"product_arrow-line\">Active ingredient Ginger<\/li>\n                    "},{"id":"text_how_to_use","type":"text","label":"How to use","default":"\n                            <li class=\"list-item\">Shake well before use<\/li>\n                            <li class=\"list-item\">Apply to roots and lengths of hair<\/li>\n                            <li class=\"list-item\">Work into lather and repeat<\/li>\n                            <li class=\"list-item\">Work into lather and repeat<\/li>\n                          "},{"id":"text_ingredients_list","type":"text","label":"Ingredients List","default":"Liquid Gold is powered by the X3 shine and anti static actives that smooths the hair follicles to silky soft tresses, whilst Sweet Almond and Sunflower oils restore moisture deep into the hair follicle. Scalp and hair health is protected with our x3 Anti Oxidant comPLEX of charcoal, dandelion and burdock ensuring the best conditions for hair growth. Finally our naturally derived sulphate free surfactants gently cleanse whilst protecting against damage, preserving optimum natural moisture levels."}],"presets":[{"name":"Product Header","category":"Liquify"}]} {% endschema %}

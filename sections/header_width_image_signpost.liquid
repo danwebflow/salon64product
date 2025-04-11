@@ -1,0 +1,28 @@
+<div class="header_img-wrap">
+  <img
+    src="{{ section.settings.image_header_image | img_url: 'master' }}"
+    alt="{{ section.settings.image_header_image.alt }}"
+    loading="lazy"
+    sizes="100vw"
+    class="hero-header_img"
+    }
+  >
+</div>
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-bottom">
+      <div class="max-width-xlarge">
+        {% if section.settings.hide_signpost == false %}
+          <div class="signpost_wrap">
+            <div class="signpost">{{ section.settings.text_signpost_text }}</div>
+            <div class="signpost_line" style="background:white;"></div>
+          </div>
+        {% endif %}
+        <div class="hero_header-wrap">
+          <div class="text-rich-text heading-style-h1__primary w-richtext">{{ section.settings.richtext_h1 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"header","name":"Header with Signpost","class":"section_hero is-img","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"Signpost"}, {"id":"hide_signpost","type":"checkbox","label":"Hide Signpost on this page","default":true},{"id":"image_header_image","type":"image_picker","label":"Header Image"},{"id":"richtext_h1","type":"richtext","label":"H1","default":"<h1>Shop></h1>"}],"presets":[{"name":"Header with Signpost","category":"Liquify"}]} {% endschema %}

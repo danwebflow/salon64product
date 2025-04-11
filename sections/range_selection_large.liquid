@@ -1,0 +1,45 @@
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-large">
+      <div class="flex_wrap space-between">
+        <div class="flex_12">
+          <div class="signpost_wrap">
+            <div class="signpost">
+              {{ section.settings.text_signpost_text }}
+            </div>
+            <div class="signpost_line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fs-styleguide_2-col">
+        {% for range in shop.metaobjects.range.values %}
+          <div li-for="range in shop.metaobjects.range.values">
+            <a
+              li-object:href="range.system.url"
+              href="{{ range.system.url }}"
+              class="product-card_hover-in w-inline-block"
+              ><img
+                li-object:src="range.image | img_url: 'master'"
+                loading="lazy"
+                alt=""
+                src="{{ range.image | img_url: 'master' }}"
+                class="product-img"
+              >
+            </a>
+
+            <link rel="prefetch" href="/shop/product">
+
+            <div class="product-card_details">
+              <div class="spacer"><div data-sm="" class="spacer_inner"></div></div>
+              <h2 li-object:text="range.meta_title" class="heading-style-h3">
+                {{ range.meta_title }}
+              </h2>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+      <div class="button-group is-center pt-2"><a href="pages/shop-all" class="button w-button">shop all</a></div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"section","name":"Range Selection Larg","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"best sellers"}],"presets":[{"name":"Range Selection Larg","category":"Liquify"}]} {% endschema %}

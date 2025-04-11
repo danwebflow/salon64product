@@ -1,0 +1,45 @@
+<div class="product-card">
+  <a
+    li-object:href="product.url"
+    href="{{ product.url }}"
+    aria-current="page"
+    class="product-card_hover-in w-inline-block w--current"
+    ><img
+      src="{{ product.featured_image | img_url: 'master' }}"
+      loading="lazy"
+      li-object:src="product.featured_image | img_url: 'master'"
+      li-object:alt="product.featured_image.alt"
+      alt="{{ product.featured_image.alt }}"
+      class="product-img"
+    >
+    <div class="product-hover-state">
+      <div class="z-index-1">View more</div>
+      <img
+        src="{{ product.metafields.custom.product_img | img_url: 'master' }}"
+        loading="lazy"
+        li-object:src="product.metafields.custom.product_img | img_url: 'master'"
+        li-object:alt="product.metafields.custom.product_img.alt"
+        alt="{{ product.metafields.custom.product_img.alt }}"
+        class="product-img-2"
+      >
+      <div class="product-hover_bk"></div>
+    </div></a
+  ><link rel="prefetch" href="/shop/product">
+  <div class="product-card_details">
+    <div class="product-filters">
+      <div bind="03460003-c878-2f0e-566d-c3085b1f2715">This is some text inside of a div block.</div>
+    </div>
+    <h2 li-object="product.title" class="heading-style-h3">{{ product.title }}</h2>
+    <div li-object="product.price | money" class="product-grid-price">{{ product.price | money }}</div>
+    <div class="spacer"></div>
+    <script src="{{ 'liquify_custom.js' | asset_url }}" type="text/javascript"></script>
+    <a
+      li-element="direct-add-to-cart"
+      href="#"
+      class="button is-add-to-cart-button is-alt w-button"
+      x-data="handleVariant({{ product | json | escape }}, {{ product.options_by_name | json | escape }}, {{ product.selected_or_first_available_variant | json | escape }})"
+      @click="addToCart(true)"
+      >Add to cart</a
+    >
+  </div>
+</div>

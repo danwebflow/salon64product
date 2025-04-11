@@ -1,0 +1,83 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_width_image_signpost_pXYdkX": {
+      "type": "header_width_image_signpost",
+      "settings": {
+        "text_signpost_text": "Time to tell the truth",
+        "hide_signpost": false,
+        "image_header_image": "shopify://shop_images/2.jpg",
+        "richtext_h1": "<h1><em>Uncovering hair care myths</em></h1>"
+      }
+    },
+    "header_with_slider_ALaNU3": {
+      "type": "header_with_slider",
+      "blocks": {
+        "header_slide_x9WGDi": {
+          "type": "header-slide",
+          "settings": {
+            "image_slider_image": "shopify://shop_images/2023_07_17_SHOT_5_SALON_9a8acd9c-c6e9-46bd-af53-cf77086c3548.jpg"
+          }
+        },
+        "header_slide_rfJtnw": {
+          "type": "header-slide",
+          "settings": {
+            "image_slider_image": "shopify://shop_images/Salon_64_BTS_DSC08828_33a6d60f-7842-4711-839d-a6f3e05559ba.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "header_slide_x9WGDi",
+        "header_slide_rfJtnw"
+      ],
+      "disabled": true,
+      "settings": {
+        "richtext_h1": "<h1><em>Get the</em> MIRROR RIPPLE SHINE EFFECT</h1>"
+      }
+    },
+    "signpost_and_content": {
+      "type": "signpost_and_content",
+      "settings": {
+        "text_signpost_text": "Creating the gold standard",
+        "richtext_heading": "<h2>The secrets of the salon are channeled into the SALON 64 product range.</h2>",
+        "richtext_text_content": "<p>Their trademark MIRROR GLASS RIPPLE EFFECT on the hair relies on achieving the perfect balance of  SHINE, MOISTURE AND VOLUME and each product has been perfected over years of working with VIP clients in Soho, London.</p>"
+      }
+    },
+    "featured_products": {
+      "type": "featured_products",
+      "settings": {
+        "text_signpost_text": "Best sellers",
+        "collection_collection": "recommended",
+        "collection_collection_limit": 3
+      }
+    },
+    "range_selection_3ccajL": {
+      "type": "range_selection",
+      "settings": {
+        "text_signpost_text": "Shop by Range"
+      }
+    },
+    "marquee_a4Uzbi": {
+      "type": "marquee",
+      "settings": {}
+    }
+  },
+  "layout": "theme",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_width_image_signpost_pXYdkX",
+    "header_with_slider_ALaNU3",
+    "signpost_and_content",
+    "featured_products",
+    "range_selection_3ccajL",
+    "marquee_a4Uzbi"
+  ]
+}

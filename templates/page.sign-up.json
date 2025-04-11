@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "sign_up": {
+      "type": "sign_up",
+      "settings": {
+        "text_heading": "Sign up and join the Good Luck Club!",
+        "text_paragraph": "This April we debunking hair myths. And to celebrate you can win a hair myths hair cut and consultation at Salon64 Soho + the Salon64 shampoo and conditioner of your choice. To enter all you need to do is sign up to Salon64. We will only send you the good stuff! Ricky's expert tips, money can't buy competitions, and loyalty offers and rewards!",
+        "text_checkbox_text": "TICK TO BE ENTERED: We will only send you the good stuff! Ricky's expert tips, money can't buy competitions, and loyalty offers and rewards!",
+        "sign_up_img": "shopify://shop_images/Product_BTS_DSC08459_1.jpg"
+      }
+    }
+  },
+  "layout": "page.sign-up",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "sign_up"
+  ]
+}

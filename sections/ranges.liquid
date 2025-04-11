@@ -1,0 +1,51 @@
+<div class="section">
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-large">
+        <div class="flex_wrap space-between">
+          <div class="flex_12">
+            <div class="signpost_wrap">
+              <div class="signpost">
+                {{ section.settings.text_signpost_text }}
+              </div>
+              <div class="signpost_line"></div>
+            </div>
+          </div>
+        </div>
+        <div class="product-range_component">
+          {% for range in shop.metaobjects.range.values %}
+            <div li-for="range in shop.metaobjects.range.values">
+              <a
+                li-object:href="range.system.url"
+                href="{{ range.system.url }}"
+                class="range-item_details w-inline-block"
+              >
+                <div class="range-item_header">
+                  <div li-object:text="range.number" class="signpost">
+                    {{ range.number }}
+                  </div>
+                  <h2 li-object:text="range.meta_title" class="heading-style-h2 is-range">
+                    {{ range.meta_title }}
+                  </h2>
+                  <div class="category-range_img-container">
+                    <div class="range-animation-img-wrapper">
+                      <img
+                        src="{{ range.image | img_url: 'master' }}"
+                        loading="lazy"
+                        li-object:src="range.image | img_url: 'master'"
+                        alt=""
+                        class="range-img"
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="product-div-full_container is-range"></div>
+              </a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"section","name":"Ranges","class":"section","settings":[{"id":"text_signpost_text","type":"text","label":"Signpost Text","default":"shop by range"}],"presets":[{"name":"Ranges","category":"Liquify"}]} {% endschema %}

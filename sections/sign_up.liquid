@@ -1,0 +1,130 @@
+<div class="padding-global is-full-form">
+  <div class="booking-container">
+    <div class="booking-img_wrapper">
+
+<img
+  width="1366"
+  loading="lazy"
+  alt="two women posing for the camera"
+  src="{{ section.settings.sign_up_img | image_url }}"
+  class="fixed-form-img"
+/>
+
+    </div>
+    <div class="booking-form_wrapper">
+      <div>
+        <div class="max-width-forms-fixed">
+          <div id="form" class="form-wrapper w-form">
+            {% form 'customer', return_to: '/pages/sign-up-thank-you', class: 'form is--booking-form apply-form' %}
+              <h1 class="heading-style-h2">
+                {{ section.settings.text_heading }}
+              </h1>
+              <div class="spacer"><div data-sm="" class="spacer_inner"></div></div>
+              <p>
+                {{ section.settings.text_paragraph }}
+              </p>
+              <div class="spacer"><div data-sm="" class="spacer_inner"></div></div>
+              <input
+                class="form_input w-input"
+                maxlength="256"
+                name="contact[first_name]"
+                data-name="contact[first_name]"
+                placeholder="First Name"
+                type="text"
+                id="contact[first_name]"
+                required=""
+              >
+              <input
+                class="form_input w-input"
+                maxlength="256"
+                name="contact[last_name]"
+                data-name="contact[last_name]"
+                placeholder="Surname"
+                type="text"
+                id="contact[last_name]"
+                required=""
+              >
+              <input
+                class="form_input w-input"
+                maxlength="256"
+                name="contact[email]"
+                data-name="contact[email]"
+                placeholder="Email Address"
+                type="email"
+                id="contact[email]"
+                required=""
+              >
+              <div li-object="form.errors | default_errors" class="error-message_text">
+                {{ form.errors | default_errors }}
+              </div>
+              <input type="submit" data-wait="Please wait..." class="button is-form-submit w-button" value="Subscribe">
+              <div class="spacer"><div data-sm="" class="spacer_inner"></div></div>
+              <div class="hide w-embed"><input type="hidden" name="contact[accepts_marketing]" value="true"></div>
+            {% endform %}
+            <div class="form_success form_disabled w-form-done">
+              <h2>Thank you</h2>
+              <div class="spacer-small-7"></div>
+              <div>
+                Hey there!<br>
+                ‍<br>
+                Big thanks for sending your application to Club64! It's awesome to see you're keen on joining us on this
+                adventure. Just a heads up, our inbox is overflowing with applications right now, so things are a bit
+                hectic on our end.<br>
+                ‍<br>
+                We'll definitely reach out to you as soon as possible. Hang tight, and thanks so much for your patience!<br>
+                Hope you're having a fantastic day, and we really can't wait to meet you in person!<br>
+                <br>
+                Cheers.
+              </div>
+            </div>
+            <div class="form_error w-form-fail">
+              <div>
+                Please enter your email address and password. If you're unable to remember these details please select
+                forgot password.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "tag": "section",
+  "name": "Sign Up",
+  "class": "section",
+  "settings": [
+    {
+      "id": "text_heading",
+      "type": "text",
+      "label": "Heading",
+      "default": "<em>Sign up for our</em> NEWSLETTER"
+    },
+    {
+      "id": "text_paragraph",
+      "type": "text",
+      "label": "Paragraph",
+      "default": "Intro paragraph about signing up."
+    },
+    {
+      "id": "text_checkbox_text",
+      "type": "text",
+      "label": "Checkbox Text",
+      "default": "Message to agree to sign up."
+    },
+    {
+      "id": "sign_up_img",
+      "type": "image_picker",
+      "label": "Sign Up Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sign Up",
+      "category": "Liquify"
+    }
+  ]
+}
+{% endschema %}

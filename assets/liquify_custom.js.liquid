@@ -1,0 +1,863 @@
+document.addEventListener('alpine:init', () => {
+    Alpine.data('handleVariant', (pProduct = null, optionsByName = null, selectedOrFirstAvailable = null) => ({
+        /**
+         * The current product object.
+         */
+        product: pProduct,
+        options_by_name: optionsByName,
+        /**
+         * The options of the currently selected product.
+         */
+        options: pProduct?.options,
+        /**
+         * All variants of the current product.
+         */
+        variants: pProduct?.variants,
+        initial_selected_or_first_available_variant: selectedOrFirstAvailable,
+        selected_or_first_available_variant: selectedOrFirstAvailable,
+        variantImage: selectedOrFirstAvailable?.featured_image?.src,
+        selected_product_id: selectedOrFirstAvailable?.id,
+        _price: selectedOrFirstAvailable?.price ?? 0,
+        quantity: 1,
+        addToCartButton: true,
+        firstOptionHasAvailableChildren: {},
+        selectorType: 'radio',
+        formSelector: "#product_form_" + pProduct.id,
+        isMainProduct: false,
+        filter: {},
+
+        // Use init for debugging
+        init() {
+            const productId = document.querySelector('[li-element="product-variant-container"][data-productid]')?.getAttribute('data-productid');
+            this.isMainProduct = parseInt(productId) === parseInt(pProduct.id);
+        },
+
+        qs(selector) {
+            return document.querySelector(selector)
+        },
+
+        set price(value) {
+            if (isNaN(value)) {
+                throw new Error('Liquify - Price must be a number');
+            }
+            this._price = value;
+        },
+
+        get price() {
+            const price = new Intl.NumberFormat(Shopify.locale + '-' + Shopify.country, {
+                style: 'currency',
+                currency: Shopify.currency.active,
+            });
+            return price.format(this._price / 100 ?? 0);
+        },
+
+        /**
+         * @wip: returns an object with the available variants based on the current filter-selection.
+         *   result.existingOptions contains the list of options based on the given filter.
+         */
+        get variantsBasedOnFilter() {
+            let result = {
+                availableVariants: [],
+            };
+
+            // If no filter is set, return all variants
+            if (Object.keys(this.filter).length === 0) {
+                result.availableVariants = this.variants;
+            } else {
+                // Filter variants based on current filter
+                result.availableVariants = this.variants.filter(variant => {
+                    // Define, how many filters should match
+                    // let filter = this.getFirstTwoSelectedFilters()
+                    let filter = this.filter
+
+                    return Object.entries(filter).every(([filterName, filterValue]) => {
+                        console.log("filterValue", filterValue, this.getFirstTwoSelectedFilters())
+                        const matchingOption = Object.entries(variant).find(([key, value]) =>
+                            key.startsWith('option') && value === filterValue
+                        );
+                        return matchingOption !== undefined;
+                    });
+                });
+            }
+
+            result.existingOptions = this.getExistingOptions(result.availableVariants);
+
+            console.log("Liquify - return of variantsBasedOnFilter", result)
+
+            return result;
+        },
+
+        getFirstTwoSelectedFilters() {
+            return Object.entries(this.filter).slice(0, 2).reduce((acc, [key, value]) => {
+                acc[key] = value;
+                return acc;
+            }, {});
+        },
+
+        getExistingOptions(variants) {
+            let uniqueOptions = {
+                option1: [...new Set(variants.map(item => item.option1))],
+                option2: [...new Set(variants.map(item => item.option2))],
+                option3: [...new Set(variants.map(item => item.option3))],
+            }
+
+            let optionsByName = {}
+            Object.assign(optionsByName, this.options_by_name);
+
+            let optionNames = this.optionNames(optionsByName);
+
+            let result = {}
+            Object.keys(optionNames).forEach(optionName => {
+                let optionValues = Object.values(optionNames[optionName]);
+                // map the actual option name to the unique options
+                Object.values(uniqueOptions).forEach(value => {
+                    if (value.length > 0 && optionValues.includes(value[0])) {
+                        result[optionName] = value;
+                    }
+                });
+            });
+
+            return result
+        },
+
+        optionNames(data) {
+            const result = {};
+
+            Object.keys(data).forEach(optionName => {
+                result[optionName] = data[optionName].option.values;
+            });
+
+            return result;
+        },
+
+        observeVariants() {
+            if(this.isMainProduct) {
+                // todo: maybe via $dispatch or helper?!
+                let $this = this;
+                window.onpopstate = function(event) {
+
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const variantId = urlParams.get('variant');
+                    const observer = new MutationObserver(mutationCallback);
+                    //fixme: maybe in helper?!
+                    function mutationCallback(mutations) {
+                        mutations.forEach(function(mutation) {
+                            if (mutation.type === "attributes" && (mutation.attributeName === "checked" || mutation.attributeName === "selected")) {
+                                // fixme: kann/muss theoretisch weg, da über :class gelöst werden muss
+                                mutation.target.previousElementSibling.classList.remove('w--redirected-checked', 'w--redirected-focus')
+                                if(mutation?.target?.checked || mutation?.target?.selected) {
+                                    mutation.target.previousElementSibling.classList.add('w--redirected-checked', 'w--redirected-focus')
+                                    $this.setVariant(false)
+                                }
+                            }
+                        })
+                        observer.disconnect()
+                    }
+
+                    selectedOrFirstAvailable = $this?.variants.filter(variant => parseInt(variant.id) === parseInt(variantId))[0]
+
+                    $this.selected_or_first_available_variant = selectedOrFirstAvailable;
+
+                    $this.options.forEach(function (option) {
+                        let selector = $this.formSelector + " [data-productVariantsLoop] input[name='" + option + "']"
+                        if($this.selectorType === 'select') {
+                            selector = $this.formSelector + " [data-productVariantsLoop] select[name='" + option + "'] option"
+                        }
+                        document.querySelectorAll(selector).values().forEach(function(element) {
+                            observer.observe(element, {
+                                attributes: true
+                            });
+                        })
+                    })
+                }
+            }
+        },
+
+        updateVariantStatuses() {
+            const selectedOptionOneVariants = this.variants.filter((variant) => {
+                    let querySelector = this.formSelector + ' [data-productVariantsLoop] input[type="radio"]:checked'
+                    if (this.selectorType === 'select') {
+                        querySelector = this.formSelector + ' [data-productVariantsLoop] select'
+                    }
+                    return document.querySelector(querySelector)?.value === variant.option1
+                }
+            );
+
+            const inputWrappers = [...document.querySelectorAll(this.formSelector + ' [data-ProductVariantsLoop]')];
+
+            inputWrappers.forEach((option, index) => {
+                if (index === 0) return;
+
+                let optionInputs = [...option.querySelectorAll('input[type="radio"]')];
+
+                if (this.selectorType === 'select') {
+                    optionInputs = [...option.querySelectorAll('option')];
+                }
+
+                const previousOptionSelected = inputWrappers[index - 1].querySelector(':checked')?.value
+                if (!previousOptionSelected) {
+                    return;
+                }
+
+                const availableOptionInputsValue = selectedOptionOneVariants
+                    .filter((variant) => variant.available && variant[`option${index}`] === previousOptionSelected)
+                    .map((variantOption) => variantOption[`option${index + 1}`]);
+
+                // Select the next available option
+                if (this.selectorType === 'select') {
+                    for (let i = 0; i < option.querySelector('select').options.length; i++) {
+                        if (option.querySelector('select').options[i].text === availableOptionInputsValue[0]) {
+                            option.querySelector('select').selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                this.setInputAvailability(optionInputs, availableOptionInputsValue);
+            });
+        },
+
+        setInputAvailability(listOfOptions, listOfAvailableOptions) {
+            listOfOptions.forEach((input) => {
+                if (listOfAvailableOptions.includes(input.getAttribute('value'))) {
+                    input.classList.remove('data-disabled');
+                    input.removeAttribute('data-disabled');
+                    if (this.selectorType === 'select') {
+                        input.removeAttribute("disabled");
+                    }
+                } else {
+                    input.classList.add('data-disabled');
+                    input.setAttribute('data-disabled', '');
+                    if (this.selectorType === 'select') {
+                        input.setAttribute("disabled", "true");
+                    }
+                }
+            });
+
+        },
+
+        /**
+         * Called by x-init.
+         *
+         * @see ProductVariationsContainer
+         */
+        activateVariants() {
+            this.observeVariants();
+
+            this.selectorType = document.querySelector('[data-selectorType]')?.dataset?.selectortype ?? this.selectorType
+
+            this.variants.map((variant) => {
+                if (this.firstOptionHasAvailableChildren[variant?.option1] === undefined) {
+                    this.firstOptionHasAvailableChildren[variant?.option1] = 0;
+                }
+                this.firstOptionHasAvailableChildren[variant?.option1] += variant?.available;
+            });
+
+            const option1 = this.options.length > 0
+                ? this.getVariantElement(this.options?.[0])
+                : false;
+
+            const option2 = this.options.length > 1
+                ? this.getVariantElement(this.options?.[1])
+                : false;
+
+            const option3 = this.options.length > 2
+                ? this.getVariantElement(this.options?.[2])
+                : false;
+
+            if (option1) {
+                this.activateVariant(option1)
+            }
+            if (option2) {
+                this.activateVariant(option2)
+            }
+            if (option3) {
+                this.activateVariant(option3)
+            }
+            this.updateVariantStatuses()
+
+            // @todo: Replace with CSS
+            const css = ' [data-ProductVariantsLoop] input[type=radio].data-disabled + span{ ' +
+                ' text-decoration: line-through; ' +
+                ' opacity: .5; ' +
+                ' } ' +
+                ' .button.max-width-full.w-button:data-disabled, ' +
+                ' .button.max-width-full.w-button[data-disabled] { ' +
+                '  cursor: not-allowed; ' +
+                ' }';
+            const style = document.createElement("style")
+            const head = document.getElementsByTagName('head')[0]
+            head.appendChild(style)
+            style.appendChild(document.createTextNode(css));
+        },
+
+        activateVariant(element) {
+            element.previousElementSibling.classList.add('w--redirected-checked')
+        },
+
+        /**
+         * Retrieves the value of the selected Redio button from the transferred option group
+         */
+        checkedVariantValue(optionName) {
+            return this.getVariantElement(optionName)?.value;
+        },
+
+        /**
+         * Retrieves the selected element from the transferred option group
+         */
+        getVariantElement(optionName) {
+            let selector = this.formSelector + " [data-productVariantsLoop] input[name='" + optionName + "']:checked";
+
+            if (optionName != undefined && this.selectorType === 'select') {
+                selector = this.formSelector + " [data-productVariantsLoop] select[name='" + optionName + "'] option:checked"
+
+                // fixme: As a workaround, we check if we find the element.
+                //  If not, we use a less specific selector.
+                let element = this.qs(selector)
+                if (!element) {
+                    element = document.querySelector('form[id^="product_form_"]')
+                    console.log("Liquify - getVariantElement, fallback element: ", element)
+                }
+
+                if (!element) {
+                    throw new Error('Liquify - Element not found for selector: ' + selector);
+                }
+
+                if (element['data-disabled'] ?? false) {
+                    selector = this.formSelector + " [data-productVariantsLoop] select[name='" + optionName + "'] option:not([data-disabled])"
+                }
+            }
+
+            return this.qs(selector) ? this.qs(selector) : '';
+        },
+
+        filterVariants() {
+            const option1 = this.options.length > 0
+                ? this.checkedVariantValue(this.options?.[0])
+                : false;
+
+            const option2 = this.options.length > 1
+                ? this.checkedVariantValue(this.options?.[1])
+                : false;
+
+            const option3 = this.options.length > 2
+                ? this.checkedVariantValue(this.options?.[2])
+                : false;
+
+            let selectedOptions = [
+                option1,
+                option2,
+                option3,
+            ];
+            selectedOptions = (selectedOptions.filter(i => i)).join('-')
+
+            let possibleProducts = []
+            for (const variant of this.variants) {
+                let variantString = [
+                    option1 ? variant?.option1 : undefined,
+                    option2 ? variant?.option2 : undefined,
+                    option3 ? variant?.option3 : undefined,
+                ];
+                variantString = (variantString.filter(i => i)).join('-')
+
+                if (selectedOptions === variantString) {
+                    possibleProducts.push(variant)
+                }
+            }
+
+            return possibleProducts;
+        },
+
+        /**
+         * Workaround function that works same as filterVariants but only applies two selected options.
+         * todo: Refactoring.
+         */
+        filterNextAvailableVariant() {
+            const option1 = this.checkedVariantValue(this.options?.[0]);
+            const option2 = this.checkedVariantValue(this.options?.[1]);
+
+            let selectedOptions = [
+                option1,
+                option2,
+            ];
+            selectedOptions = (selectedOptions.filter(i => i)).join('-')
+
+            let possibleProducts = []
+            for (const variant of this.variants) {
+                let variantString = [
+                    option1 ? variant?.option1 : undefined,
+                    option2 ? variant?.option2 : undefined,
+                ];
+                variantString = (variantString.filter(i => i)).join('-')
+
+                if (selectedOptions === variantString) {
+                    possibleProducts.push(variant)
+                }
+            }
+
+            return possibleProducts;
+        },
+
+        setUrlParam() {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('variant', this.selected_product_id);
+
+            window.history.pushState({ ...window.history.state}, '', '?' + urlParams.toString());
+        },
+
+        findAvailableVariant() {
+            const matchedProducts = this.filterVariants()
+
+            if (matchedProducts.length < 1) {
+                console.log('Liquify - No unique variant found', matchedProducts)
+
+                // Workaround: Try to find the next best available option (fewer filters).
+                const nextAvailableVariant = this.filterNextAvailableVariant()
+                console.log('Liquify - nextAvailableVariant', nextAvailableVariant)
+
+                if (nextAvailableVariant.length > 0) {
+                    const nextAvailable = nextAvailableVariant.filter(variant => variant.available)
+                    // We settled on the first available Variant to be selected.
+                    return nextAvailable[0]
+                }
+
+                console.log('Liquify - No next best option found, using initial first available variant')
+
+                return this.initial_selected_or_first_available_variant
+            }
+
+            return matchedProducts[0]
+        },
+
+        setVariant(pushState = true) {
+            const product = this.findAvailableVariant()
+
+            if (! product) {
+                console.log('Liquify - No product found to set active')
+
+                return
+            }
+
+            console.log('Liquify - Set active variant', product)
+
+            this.addToCartButton = true
+
+            this.selected_product_id = product.id
+            this.variantImage = product?.featured_image?.src
+            this.price = product?.price;
+            this.selected_or_first_available_variant = product;
+
+            // nur für die Detailseiten
+            if (pushState && this.isMainProduct) {
+                this.setUrlParam()
+            }
+
+            this.updateVariantStatuses()
+        },
+
+        getAddToCartBody(products) {
+            return JSON.stringify({
+                'items': products.map(product => ({
+                    id: product.id,
+                    quantity: product.quantity ?? 1,
+                }))
+            });
+        },
+
+        callAddToCartApi(body) {
+            return fetch(window.Shopify.routes.root + 'cart/add.js', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: body
+            })
+        },
+
+        /**
+         * Add all products to cart.
+         */
+        async addToCartWithBundle(toggleMiniCart = true) {
+            console.log('Liquify - addToCartWithBundle()', toggleMiniCart);
+
+            // Map all bundle products
+            const products = Object.entries(this.bundle).map(([key, value]) => ({
+                id: value,
+                quantity: 1
+            }))
+
+            // Add selected product
+            products.push({
+                id: this.selected_product_id ?? this.selected_or_first_available_variant?.id,
+                quantity: this.quantity ?? 1,
+            })
+
+            // Create body with all products
+            let body = this.getAddToCartBody(products);
+
+            // Single API call for all products
+            try {
+                let response = await this.callAddToCartApi(body);
+                let data = await response.json();
+                console.log('Liquify - Items added (addToCartWithBundle()):', data.items);
+                this.products = data.items;
+
+                LiquifyHelper.handleTriggerClick();
+
+                this.$dispatch('cartupdated');
+                if (toggleMiniCart) {
+                    this.$dispatch('toggleminicart');
+                }
+                this.$dispatch('showcartmessage', {
+                    status: data.status,
+                    message: data.message,
+                    description: data.description
+                });
+            } catch (error) {
+                console.error('Liquify - Error in add to cart with bundle:', error);
+                this.$dispatch('showcartmessage', {
+                    status: error.status,
+                    message: error.message,
+                    description: error.description
+                });
+            }
+        },
+
+        /**
+         * Add a single product to cart.
+         */
+        async addToCart(toggleMiniCart = true, productId = undefined, quantity = undefined) {
+            console.log('Liquify - Add to cart called, selected_or_first_available_variant.id:', this.selected_or_first_available_variant?.id);
+
+            if (!this.selected_or_first_available_variant?.available) {
+                return
+            }
+
+            let body = JSON.stringify({
+                'items': [
+                    {
+                        id: productId ?? this.selectedProductId ?? this.selected_or_first_available_variant?.id,
+                        quantity: quantity ?? this.quantity ?? 1,
+                    }
+                ]
+            });
+
+            await fetch(window.Shopify.routes.root + 'cart/add.js', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: body
+            })
+                .then(response => response.json())
+                .then(data => {
+                    this.products = data.items;
+
+                    console.log('Liquify - product(s) added');
+                    this.$dispatch('cartupdated');
+
+                    if (toggleMiniCart) {
+                        this.$dispatch('toggleminicart');
+                    }
+
+                    this.$dispatch('showcartmessage', { status: data.status, message: data.message, description: data.description });
+                })
+                .catch((error) => {
+                    console.error('Liquify - addToCart error:', error);
+                    this.$dispatch('showcartmessage', { status: error.status, message: error.message, description: error.description });
+                });
+        },
+
+        /**
+         * Add a single product to cart and redirect to checkout.
+         */
+        async addToCartAndCheckout(toggleMiniCart = true, productId = undefined, quantity = undefined) {
+            await this.addToCart(toggleMiniCart, productId, quantity)
+                .then(() => {
+                    window.location.href = '/checkout';
+                });
+        },
+
+        /**
+         * Format monetary values.
+         */
+        moneyFormat(value, minor = true) {
+            return LiquifyHelper.moneyFormat(value, minor)
+        },
+    }));
+
+    /**
+     * Alpine-Store for Global Bundle.
+     */
+    Alpine.data('handleGlobalBundle', (useQuantity = true, shopMoneyFormat) => ({
+        globalBundle: [],
+        bundleName: '',
+        useQuantity: useQuantity,
+        shopMoneyFormat: shopMoneyFormat,
+        bundleIndex: 1,
+
+        init() {
+            this.loadGlobalBundle();
+            this.loadBundleIndex();
+        },
+
+        handleAdd(event) {
+            this.addToGlobalBundle(event.detail.variant, event.detail.product)
+        },
+
+        /**
+         * Returns the total price of all products in the globalBundle.
+         */
+        get total() {
+            return this.globalBundle.reduce((acc, item) => {
+                return acc + (item.product.price * item.quantity);
+            }, 0);
+        },
+
+        /**
+         * Bundle total will be formatted as configured in Shopify: shop.money_with_currency_format
+         */
+        get totalFormatted() {
+            return LiquifyHelper.moneyFormat(this.total, true, this.shopMoneyFormat);
+        },
+
+        getGlobalBundleCartBody() {
+            let globalBundle = this.getGlobalBundleFromLocalStorage();
+
+            return JSON.stringify({
+                'items': globalBundle.map(item => ({
+                    id: item.variant.id,
+                    quantity: item.quantity,
+                    properties: {
+                        'bundle': `${this.bundleName} ${this.bundleIndex}`,
+                    }
+                }))
+            })
+        },
+
+        /**
+         * @todo Refactoring: Duplication in handleVariant() store.
+         */
+        callAddToCartApi(body) {
+            return fetch(window.Shopify.routes.root + 'cart/add.js', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: body
+            })
+        },
+
+        async addGlobalBundleToCart() {
+            const body = this.getGlobalBundleCartBody()
+
+            await this.callAddToCartApi(body)
+                .then(response => {
+                    let data = response.json();
+
+                    this.updateBundleIndex();
+                    this.clearGlobalBundle();
+                    LiquifyHelper.handleTriggerClick();
+
+                    this.$dispatch('cartupdated');
+                    this.$dispatch('toggleminicart');
+                    this.$dispatch('showcartmessage', {
+                        status: data.status,
+                        message: data.message,
+                        description: data.description
+                    });
+                });
+        },
+
+        clearGlobalBundle() {
+            this.updateBundleObject([]);
+        },
+
+        /**
+         * Adds a new product to the globalBundle.
+         *
+         * If quantities are enabled and the product is already in the bundle, increase the quantity by 1.
+         */
+        addToGlobalBundle(variant, product) {
+            if (this.useQuantity) {
+                this.addOrIncreaseGlobalBundleItem(
+                    this.getNewGlobalBundleItem(variant, product, variant.quantity)
+                );
+
+                return;
+            }
+
+            // Add the product as a new item to the bundle.
+            this.addNewGlobalBundleItem(
+                this.getNewGlobalBundleItem(variant, product, variant.quantity)
+            );
+        },
+
+        getNewGlobalBundleItem(variant, product, quantity = 1) {
+            variant.quantity = quantity
+
+            return {
+                id: this.uniqueId(),
+                variant: variant,
+                quantity: variant.quantity,
+                product: product
+            }
+        },
+
+        /**
+         * If the product is already in the bundle, increase the quantity by 1.
+         */
+        addOrIncreaseGlobalBundleItem(item) {
+            let globalBundle = this.getGlobalBundleFromLocalStorage();
+            let existingItem = globalBundle.find(bundleItem => bundleItem.variant.id === item.variant.id);
+
+            if (existingItem) {
+                let quantity = parseInt(existingItem.variant.quantity);
+                quantity += item.variant.quantity;
+                existingItem.quantity = quantity;
+                existingItem.variant.quantity = quantity;
+            } else {
+                globalBundle.push(item);
+            }
+
+            this.updateBundleObject(globalBundle);
+        },
+
+        addNewGlobalBundleItem(item) {
+            let globalBundle = this.getGlobalBundleFromLocalStorage();
+            globalBundle.push(item);
+
+            this.updateBundleObject(globalBundle);
+        },
+
+        /**
+         * Update the Alpine globalBundle object and save it to local storage.
+         */
+        updateBundleObject(globalBundle) {
+            this.globalBundle = globalBundle;
+            localStorage.setItem('globalBundle', JSON.stringify(globalBundle));
+        },
+
+        /**
+         * One method to handle the various ways to update a bundle item.
+         *
+         * @see ProductVariationsContainer
+         */
+        updateBundleItem(bundleItemId, quantity) {
+            this.loadGlobalBundle();
+
+            if (quantity === 0) {
+                this.removeProductFromGlobalBundle(bundleItemId);
+                return;
+            }
+
+            if (quantity === '-1') {
+                this.decrementQuantityOfBundleItem(bundleItemId);
+                return;
+            }
+
+            if (quantity === '+1') {
+                this.incrementQuantityOfBundleItem(bundleItemId);
+                return;
+            }
+
+            this.updateQuantityOfBundleItem(bundleItemId, quantity);
+        },
+
+        updateQuantityOfBundleItem(bundleItemId, quantity) {
+            let bundle = this.getGlobalBundleFromLocalStorage();
+            let bundleItem = bundle.find(bundleItem => bundleItem.id === bundleItemId);
+            bundleItem.quantity = quantity;
+            bundleItem.product.quantity = quantity;
+
+            this.updateBundleObject(bundle);
+        },
+
+        decrementQuantityOfBundleItem(bundleItemId) {
+            let bundle = this.getGlobalBundleFromLocalStorage();
+            let bundleItem = bundle.find(bundleItem => bundleItem.id === bundleItemId);
+
+            if (bundleItem.quantity === 1) {
+                this.removeProductFromGlobalBundle(bundleItemId);
+
+                return;
+            }
+
+            bundleItem.quantity -= 1;
+            bundleItem.product.quantity -= 1;
+
+            this.updateBundleObject(bundle);
+        },
+
+        incrementQuantityOfBundleItem(bundleItemId) {
+            let bundle = this.getGlobalBundleFromLocalStorage();
+            let bundleItem = bundle.find(bundleItem => bundleItem.id === bundleItemId);
+            let quantity = parseInt(bundleItem.quantity)
+            quantity += 1;
+            bundleItem.quantity = quantity;
+            bundleItem.product.quantity = quantity;
+
+            this.updateBundleObject(bundle);
+        },
+
+        /**
+         * Removes a product from the globalBundle.
+         */
+        removeProductFromGlobalBundle(bundleItemId) {
+            let bundle = this.getGlobalBundleFromLocalStorage();
+            bundle = bundle.filter(bundleItem => bundleItem.id !== bundleItemId);
+
+            this.updateBundleObject(bundle);
+        },
+
+        /**
+         * Get the globalBundle from local storage and set it to the globalBundle property.
+         */
+        loadGlobalBundle() {
+            this.getBundleName();
+            this.globalBundle = this.getGlobalBundleFromLocalStorage();
+        },
+
+        loadBundleIndex() {
+            let bundleIndex = localStorage.getItem('globalBundleIndex');
+
+            if (! bundleIndex) {
+                localStorage.setItem('globalBundleIndex', '1');
+                this.bundleIndex = 1;
+
+                return;
+            }
+
+            this.bundleIndex = parseInt(bundleIndex);
+        },
+
+        getGlobalBundleFromLocalStorage() {
+            return JSON.parse(localStorage.getItem('globalBundle')) ?? [];
+        },
+
+        getBundleName() {
+            if (document.querySelector('[data-bundlename]')) {
+                this.bundleName = document.querySelector('[data-bundlename]')
+                                                .textContent
+                                                .trim();
+
+                return
+            }
+
+            if (document.querySelector('[data-bundlename] *')) {
+                this.bundleName = document.querySelector('[data-bundlename] *')
+                                                .textContent
+                                                .trim();
+
+                return
+            }
+
+            this.bundleName = 'Bundle';
+        },
+
+        updateBundleIndex() {
+            let globalBundleIndex = parseInt(localStorage.getItem('globalBundleIndex'));
+            globalBundleIndex += 1;
+            this.bundleIndex = globalBundleIndex;
+            localStorage.setItem('globalBundleIndex', globalBundleIndex.toString());
+        },
+
+        uniqueId() {
+            return Math.trunc(Math.random() * 100000000);
+        },
+    }));
+})

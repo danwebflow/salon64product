@@ -1,0 +1,22 @@
+<div class="header_img-wrap">
+  <img
+    src="{{ section.settings.image_header_image | img_url: 'master' }}"
+    alt="{{ section.settings.image_header_image.alt }}"
+    loading="lazy"
+    sizes="100vw"
+    class="hero-header_img"
+    }
+  >
+</div>
+<div class="padding-global">
+  <div class="container-large">
+    <div class="padding-section-bottom">
+      <div class="max-width-xlarge">
+        <div class="hero_header-wrap">
+          <div class="text-rich-text heading-style-h1__primary w-richtext">{{ section.settings.richtext_h1 }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %} {"tag":"header","name":"Header with Image","class":"section_hero is-img","settings":[{"id":"image_header_image","type":"image_picker","label":"Header Image"},{"id":"richtext_h1","type":"richtext","label":"H1","default":"<p>\n                    <em>Shop<\/em> ALL\n                  <\/p>"}],"presets":[{"name":"Header with Image","category":"Liquify"}]} {% endschema %}

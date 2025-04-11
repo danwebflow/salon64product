@@ -1,0 +1,42 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "header_with_image": {
+      "type": "header_with_image",
+      "settings": {}
+    },
+    "signpost_and_content": {
+      "type": "signpost_and_content",
+      "settings": {}
+    },
+    "range": {
+      "type": "range",
+      "settings": {}
+    },
+    "branded_section": {
+      "type": "branded_section",
+      "settings": {}
+    },
+    "join_sections": {
+      "type": "join_sections",
+      "settings": {}
+    }
+  },
+  "layout": "page.range",
+  "wrapper": "main.main-wrapper",
+  "order": [
+    "header_with_image",
+    "signpost_and_content",
+    "range",
+    "branded_section",
+    "join_sections"
+  ]
+}
