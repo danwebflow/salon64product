@@ -1,0 +1,64 @@
+name: Prettier Liquid
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+
+jobs:
+  prettier:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Git user
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Prettify Liquid files
+        uses: creyD/prettier_action@v4.6
+        with:
+          prettier_options: --write .
+
+      - name: Commit and Push changes
+        run: |
+          if ! git diff --exit-code; then
+            git add .
+            git commit -m "Prettify code (automated)"
+
+            if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+              TARGET_BRANCH="${{ github.event.pull_request.head.ref }}"
+              echo "Pushing formatted code back to PR branch: $TARGET_BRANCH"
+            elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+              TARGET_BRANCH="main"
+              echo "Pushing formatted code to main branch..."
+            else
+              echo "Changes detected, but not pushing automatically for this event type or branch."
+              exit 0
+            fi
+
+            git push origin HEAD:$TARGET_BRANCH
+          else
+            echo "No formatting changes detected. Nothing to commit."
+          fi

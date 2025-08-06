@@ -1,259 +1,188 @@
-<div class="blog-section">
-  <div class="blog-container">
-    <h1 class="blog-title">{{ blog.title }}</h1>
-    
-    <div class="blog-grid">
-      {% for article in blog.articles %}
-        <article class="blog-article">
-          {% if article.image %}
-            <div class="article-image">
-              <a href="{{ article.url }}">
-                {{ article.image | image_url: width: 800 | image_tag: loading: 'lazy' }}
-              </a>
-            </div>
-          {% endif %}
-          
-          <div class="article-content">
-            <h2 class="article-title">
-              <a href="{{ article.url }}">{{ article.title }}</a>
-            </h2>
-            
-            <div class="article-meta">
-              {% if section.settings.show_date %}
-                <span class="article-date">{{ article.published_at | date: "%B %d, %Y" }}</span>
-              {% endif %}
-              
-              {% if section.settings.show_author %}
-                <span class="article-author">by {{ article.author }}</span>
-              {% endif %}
-            </div>
-            
-            {% if section.settings.show_excerpt %}
-              <div class="article-excerpt">
-                {{ article.excerpt_or_content | strip_html | truncatewords: 30 }}
-              </div>
-            {% endif %}
-            
-            {% if section.settings.show_tags and article.tags.size > 0 %}
-              <div class="article-tags">
-                {% for tag in article.tags %}
-                  <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="tag">{{ tag }}</a>
-                {% endfor %}
-              </div>
-            {% endif %}
-            
-            {% if section.settings.show_read_more %}
-              <a href="{{ article.url }}" class="read-more">Read More</a>
-            {% endif %}
-          </div>
-        </article>
-      {% endfor %}
-    </div>
-    
-    {% if paginate.pages > 1 %}
-      <div class="pagination">
-        {{ paginate | default_pagination }}
-      </div>
-    {% endif %}
-  </div>
-</div>
 
-{% schema %}
-{
-  "name": "Blog",
-  "tag": "section",
-  "class": "blog-section",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "label": "Show date",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_author",
-      "label": "Show author",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_excerpt",
-      "label": "Show excerpt",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_tags",
-      "label": "Show tags",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_comments",
-      "label": "Show comments",
-      "default": true
-    },
-    {
-      "type": "checkbox",
-      "id": "show_image",
-      "label": "Show image",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "image_ratio",
-      "label": "Image ratio",
-      "options": [
+  <div class="padding-global">
+    <div class="container-large">
+      <div class="padding-section-large">
+        <div class="text-align-center">
+          <div class="max-width-large align-left">
+            <div class="u-mb-1">
+              <div class="signpost">
+{{ section.settings.text_signpost_text }}
+</div>
+              <div class="signpost_line">
+              </div>
+            </div>
+            <div class="text-rich-text heading-style-h1__primary"> {{ section.settings.richtext_h1 }} </div>
+            <div class="spacer-small">
+            </div>
+            <div>
+              <p class="text-size-medium">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="spacer-xxlarge">
+        </div>
+        {% if blog.articles != blank %}    <div class="products_grid masonry" li-if="blog.articles != blank">
+    
+          {% for article in blog.articles %}    <div class="blog__card" li-for="article in blog.articles">
+                                    
+            
+                            <a class="blog_card__layout" li-object:href="article.url" href="{{ article.url }}">
+              <div class="blog__card-img">
+                <div class="number">
+                    1
+                </div>
+                <img class="image" width="auto" height="auto" alt="{{ article.image.alt }}" loading="lazy" li-object:src="article.image | image_url: width: 450" li-object:alt="article.image.alt" src="{{ article.image | image_url: width: 450 }}">
+              </div>
+              <div class="product-card_details">
+                <div class="button-wrapper card_date">
+                  <div class="text-size-small" li-object="article.date">{{ article.date }}</div>
+                  <div class="text-size-small">
+                      -
+                  </div>
+                  <div class="text-size-small is-author" li-object="article.author">{{ article.author }}</div>
+                </div>
+                <h3 class="heading-style-h4" li-object="article.title">{{ article.title }}</h3>
+                <div class="text-size-regular" li-object="article.excert">{{ article.excerpt }}</div>
+                <div class="button-wrapper">
+                  <div class="underline-link is--alt u-ml-0">
+                    <div>
+                        read more
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+                            
+          
+                        </div>
+{% endfor %}
+            </div>
+{% endif %}
+        <div class="button-wrapper is-center">
+          <a class="button is-outline is-pagination-button">
+            <div>
+                load more
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="embed">
+    <script defer src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+    <script defer src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    //init masonry grid
+    var masonryContainer = document.querySelector('.masonry');
+    if (masonryContainer) {
+      imagesLoaded(masonryContainer, function() {
+        var msnry = new Masonry(masonryContainer, {
+          itemSelector: '.blog__card'
+        });
+      });
+    }
+  });
+</script>
+  </div> {% schema %} {
+    "tag": "section",
+    "name": "blog",
+    "class": "section is-large",
+    "settings": [
         {
-          "value": "adapt",
-          "label": "Adapt to image"
+            "id": "text_signpost_text",
+            "type": "text",
+            "label": "Signpost Text",
+            "default": "\n                  blog\n              "
         },
         {
-          "value": "portrait",
-          "label": "Portrait"
-        },
-        {
-          "value": "square",
-          "label": "Square"
+            "id": "richtext_h1",
+            "type": "richtext",
+            "label": "H1",
+            "default": "<h1><i>Get our latest</i> NEWS &amp; BLOGS</h1>"
+
+
         }
-      ],
-      "default": "adapt"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_read_more",
-      "label": "Show read more link",
-      "default": true
-    }
-  ],
-  "presets": [
-    {
-      "name": "Blog",
-      "category": "Blog"
-    }
-  ]
-}
-{% endschema %}
+    ],
+    "presets": [
+        {
+            "name": "blog",
+            "category": "Liquify",
+            "blocks": []
+        }
+    ]
+} {% endschema %}
 
 <style>
-.blog-section {
-  padding: 4rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.blog-title {
-  text-align: center;
-  margin-bottom: 3rem;
-  font-size: 2.5rem;
-}
-
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
-}
-
-.blog-article {
-  background: #fff;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  transition: transform 0.3s ease;
-}
-
-.blog-article:hover {
-  transform: translateY(-5px);
-}
-
-.article-image {
+/* 1) Default all blog images to portrait */
+.products_grid .blog__card-img {
+  aspect-ratio: 3/4 !important;
   width: 100%;
-  aspect-ratio: 16/9;
-  overflow: hidden;
-}
-
-.article-image img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
+  display: block;
 }
 
-.article-content {
-  padding: 1.5rem;
+/* 2) Flip only cards 1,3,7,9,10 → DOM indices 2,4,8,10,11 */
+.products_grid > .blog__card:nth-child(1)  .blog__card-img,
+.products_grid > .blog__card:nth-child(3)  .blog__card-img,
+.products_grid > .blog__card:nth-child(7)  .blog__card-img,
+.products_grid > .blog__card:nth-child(8)  .blog__card-img,
+.products_grid > .blog__card:nth-child(10)  .blog__card-img,
+.products_grid > .blog__card:nth-child(11)  .blog__card-img, 
+.products_grid > .blog__card:nth-child(12)  .blog__card-img {
+  aspect-ratio: 4/3 !important;
 }
 
-.article-title {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+.underline-link::before,
+.underline-link.is--alt::before,
+.underline-link.is--alt::after{
+  content: "";
+  position: absolute;
+  bottom: 0em;
+  left: 0;
+  width: 100%;
+  height: 0.0625em;
+  background-color: #131313;
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transform-origin: right;
+  transform: scaleX(0) rotate(0.001deg);
 }
 
-.article-title a {
-  color: inherit;
-  text-decoration: none;
+.underline-link:hover::before {
+  transform-origin: left;
+  transform: scaleX(1) rotate(0.001deg);
 }
 
-.article-meta {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  color: #666;
-  font-size: 0.9rem;
+/* Alt */
+.underline-link.is--alt::before {
+  transform-origin: left;
+  transform: scaleX(1) rotate(0.001deg);
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transition-delay: 0.3s;
+}
+.underline-link.is--alt::after {
+  transform-origin: right;
+  transform: scaleX(0) rotate(0.001deg);
+  transition: transform 0.735s cubic-bezier(0.625, 0.05, 0, 1);
+  transition-delay: 0s;
 }
 
-.article-excerpt {
-  margin-bottom: 1rem;
-  color: #444;
+/* 2) Trigger on card hover instead of link hover */
+.blog__card:hover .underline-link.is--alt::before {
+  transform-origin: right;
+  transform: scaleX(0) rotate(0.001deg);
+  transition-delay: 0s;
+}
+.blog__card:hover .underline-link.is--alt::after {
+  transform-origin: left;
+  transform: scaleX(1) rotate(0.001deg);
+  transition-delay: 0.3s;
 }
 
-.article-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+.is-author:before {
+content: "By ";
 }
 
-.tag {
-  background: #f5f5f5;
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
-  color: #666;
-  text-decoration: none;
-}
-
-.read-more {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  background: #000;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background 0.3s ease;
-}
-
-.read-more:hover {
-  background: #333;
-}
-
-.pagination {
-  margin-top: 3rem;
-  text-align: center;
-}
-
-.pagination a,
-.pagination span {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  margin: 0 0.25rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  text-decoration: none;
-}
-
-.pagination .current {
-  background: #000;
-  color: #fff;
-  border-color: #000;
-}
-</style> 
+</style>
